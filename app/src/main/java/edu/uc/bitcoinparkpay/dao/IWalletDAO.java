@@ -1,5 +1,7 @@
 package edu.uc.bitcoinparkpay.dao;
 
+import java.math.BigDecimal;
+
 /**
  * Created by Greg on 5/31/2015.
  */
@@ -18,7 +20,7 @@ public interface IWalletDAO {
      * @return
      * @throws Exception network problems
      */
-    public float getAddressBalance( String label ) throws Exception;
+    public BigDecimal getAddressBalance( String label ) throws Exception;
 
     /**
      * Sends bitcoin to another wallet address
@@ -28,5 +30,5 @@ public interface IWalletDAO {
      * @param pin Account pin number
      * @throws Exception network problems
      */
-    public void send( String apiKey, float amount, String to, String pin ) throws Exception;
+    public void send( String apiKey, BigDecimal amount, String to, String pin ) throws Exception;
 }
