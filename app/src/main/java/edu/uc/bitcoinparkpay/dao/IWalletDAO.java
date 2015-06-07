@@ -31,4 +31,11 @@ public interface IWalletDAO {
      * @throws Exception network problems
      */
     public void send( String apiKey, BigDecimal amount, String to, String pin ) throws Exception;
+
+    /**
+     * Saves the wallet information used to access the wallet
+     * @param label the name of the wallet
+     * @throws Exception network problems
+     */
+    public void save( String label) throws Exception;
 }
