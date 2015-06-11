@@ -28,4 +28,9 @@ public class WalletDAOStub implements IWalletDAO{
         }
 
     }
+
+    @Override
+    public void save(String label) throws Exception {
+
+    }
 }
