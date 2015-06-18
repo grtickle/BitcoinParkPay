@@ -38,4 +38,20 @@ public class NetworkDAO {
         // return data
         return returnData;
     }
+
+    public void send( String uri ) throws Exception {
+        // Http Client marries together a request and response.
+        HttpClient httpClient = new DefaultHttpClient();
+
+        // what URI do we want to receive?
+        HttpGet httpGet = new HttpGet(uri);
+
+        // handle the response
+        ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+        // access the URI and get back the return data.
+        String returnData = null;
+
+        returnData = httpClient.execute(httpGet, responseHandler);
+    }
 }
