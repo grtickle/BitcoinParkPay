@@ -15,12 +15,27 @@ public interface IWalletDAO {
     public void createWallet( String label ) throws Exception;
 
     /**
-     * Gets balance of wallet
+     * Gets balance of wallet in bitcoins
      * @param label the name of the wallet
      * @return
      * @throws Exception network problems
      */
-    public BigDecimal getAddressBalance( String label ) throws Exception;
+    public BigDecimal getBitcoinBalance( String label ) throws Exception;
+
+    /**
+     * Gets balance of wallet in dollars
+     * @param label the name of the wallet
+     * @return
+     * @throws Exception network problems
+     */
+    public BigDecimal getDollarBalance( String label ) throws Exception;
+
+    /**
+     * Gets bitcoin price
+     * @return
+     * @throws Exception network problems
+     */
+    public BigDecimal getBitcoinPrice() throws Exception;
 
     /**
      * Sends bitcoin to another wallet address

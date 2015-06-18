@@ -15,9 +15,21 @@ public class WalletDAOStub implements IWalletDAO{
     }
 
     @Override
-    public BigDecimal getAddressBalance(String label) throws Exception {
-        BigDecimal balance = new BigDecimal("0.00001");
+    public BigDecimal getBitcoinBalance(String label) throws Exception {
+        BigDecimal balance = new BigDecimal("0.001");
         return balance;
+    }
+
+    @Override
+    public BigDecimal getDollarBalance(String label) throws Exception {
+        BigDecimal balance = new BigDecimal("25.00");
+        return balance;
+    }
+
+    @Override
+    public BigDecimal getBitcoinPrice() throws Exception {
+        BigDecimal price = new BigDecimal("250.00");
+        return price;
     }
 
     @Override
@@ -26,7 +38,6 @@ public class WalletDAOStub implements IWalletDAO{
         if ( apiKey == null || amount == null || to == null || pin == null) {
             throw new Exception ("Error: missing parameter");
         }
-
     }
 
     @Override
