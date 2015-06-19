@@ -23,14 +23,6 @@ public interface IWalletDAO {
     public BigDecimal getBitcoinBalance( String label ) throws Exception;
 
     /**
-     * Gets balance of wallet in dollars
-     * @param label the name of the wallet
-     * @return
-     * @throws Exception network problems
-     */
-    public BigDecimal getDollarBalance( String label ) throws Exception;
-
-    /**
      * Gets bitcoin price
      * @return
      * @throws Exception network problems
