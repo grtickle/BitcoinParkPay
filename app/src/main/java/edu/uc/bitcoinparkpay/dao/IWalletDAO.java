@@ -45,4 +45,12 @@ public interface IWalletDAO {
      * @throws Exception network problems
      */
     public void save( String label) throws Exception;
+
+    /**
+     * Gets network fee in bitcoin
+     * @return fee
+     * @throws Exception network problems
+     */
+    public BigDecimal getNetworkFee () throws Exception;
 }
+

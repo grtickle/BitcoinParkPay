@@ -23,7 +23,7 @@ public class WalletDAOStub implements IWalletDAO{
 
     @Override
     public BigDecimal getBitcoinPrice() throws Exception {
-        BigDecimal price = new BigDecimal("250.00");
+        BigDecimal price = new BigDecimal(250.00);
         return price;
     }
 
@@ -38,5 +38,11 @@ public class WalletDAOStub implements IWalletDAO{
     @Override
     public void save(String label) throws Exception {
 
+    }
+
+    @Override
+    public BigDecimal getNetworkFee() throws Exception {
+        BigDecimal fee = new BigDecimal( 0.0001);
+        return fee;
     }
 }
