@@ -20,11 +20,6 @@ public class WalletDAOStub implements IWalletDAO{
         return balance;
     }
 
-    @Override
-    public BigDecimal getDollarBalance(String label) throws Exception {
-        BigDecimal balance = new BigDecimal("25.00");
-        return balance;
-    }
 
     @Override
     public BigDecimal getBitcoinPrice() throws Exception {
