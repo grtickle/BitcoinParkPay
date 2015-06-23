@@ -14,6 +14,12 @@ public class WalletDAOStub implements IWalletDAO{
         }
     }
 
+    /**
+     * Comment by: Jake Shedroff
+     * Add some comments into this so that it is easier to tell what is going on in the stub.
+     * This will help later when you need to look back on this.
+     *
+     */
     @Override
     public BigDecimal getBitcoinBalance(String label) throws Exception {
         BigDecimal balance = new BigDecimal("0.001");
