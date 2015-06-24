@@ -9,7 +9,7 @@ public interface IWalletDAO {
 
     /**
      * Creates a wallet
-     * @param label the name of the wallet
+     * @param label the name of the wallet - is this provided by the user?
      * @throws Exception network problems
      */
     public void createWallet( String label ) throws Exception;

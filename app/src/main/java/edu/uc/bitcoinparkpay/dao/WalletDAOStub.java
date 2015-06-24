@@ -6,10 +6,15 @@ import java.math.BigDecimal;
  * Created by Greg on 6/4/2015.
  */
 public class WalletDAOStub implements IWalletDAO{
-
+/* It's just conceptual, so I understand, but wouldn't (myString != null && !myString.isEmpty())
+ * be the best method to check for a null string? I might structure it to first find if it is not null,
+ * then have it perform it's operation, and if it is, then throw the exception.
+ */
     @Override
     public void createWallet(String label) throws Exception {
-        if ( label == null) {
+        if ( label !=null && !label.isEmpty()) {
+            //call database
+        } else {
             throw new Exception("Error: No label given");
         }
     }
@@ -30,8 +35,10 @@ public class WalletDAOStub implements IWalletDAO{
     @Override
     public void send(String apiKey, BigDecimal amount, String to, String pin) throws Exception {
 
-        if ( apiKey == null || amount == null || to == null || pin == null) {
-            throw new Exception ("Error: missing parameter");
+        if ( apiKey !=null && !apiKey.isEmpty() || amount == null || to !=null && !to.isEmpty() || pin !=null && !pin.isEmpty()) {
+            //do the action
+        } else {
+            throw new Exception("Error: missing parameter");
         }
     }
 
