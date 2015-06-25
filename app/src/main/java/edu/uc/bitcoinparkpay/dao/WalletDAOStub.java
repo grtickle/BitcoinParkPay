@@ -8,14 +8,16 @@ import java.math.BigDecimal;
 public class WalletDAOStub implements IWalletDAO{
 
     @Override
-    public void createWallet(String label) throws Exception {
-        if ( label == null) {
-            throw new Exception("Error: No label given");
+    public String createWallet( String walletName ) throws Exception {
+        if ( walletName == null) {
+            throw new Exception("Error: No walletName given");
         }
+
+        return "b5f34ea7-4e2f-493b-bf6f-75c9ea2dea1f";
     }
 
     @Override
-    public BigDecimal getBitcoinBalance(String label) throws Exception {
+    public BigDecimal getBitcoinBalance( String bitcoinAddress ) throws Exception {
         BigDecimal balance = new BigDecimal("0.001");
         return balance;
     }
@@ -28,9 +30,8 @@ public class WalletDAOStub implements IWalletDAO{
     }
 
     @Override
-    public void send(String apiKey, BigDecimal amount, String to, String pin) throws Exception {
-
-        if ( apiKey == null || amount == null || to == null || pin == null) {
+    public void send( String walletPassword, BigDecimal amount, String recipientAddress, String fromAddress, BigDecimal fee ) throws Exception {
+        if ( walletPassword == null || amount == null || recipientAddress == null || fromAddress == null || fee == null) {
             throw new Exception ("Error: missing parameter");
         }
     }
