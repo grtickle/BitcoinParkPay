@@ -5,18 +5,26 @@ import java.math.BigDecimal;
 /**
  * Created by Greg on 5/31/2015.
  */
-public interface IWalletDAO {
+public interface IAddressDAO {
 
     /**
-     * Creates a wallet
-     * @param label the name of the wallet
+     * Creates a an address
+     * @param label the name of the address
      * @throws Exception network problems
      */
-    public void createWallet( String label ) throws Exception;
+//public void createAddress( String label ) throws Exception;
 
     /**
-     * Gets balance of wallet in bitcoins
-     * @param label the name of the wallet
+     * Gets the bitcoin address from the wallet
+     * @param label the name of the address
+     * @return
+     * @throws Exception
+     */
+    public String getAddress ( String label ) throws Exception;
+
+    /**
+     * Gets balance of address in bitcoins
+     * @param label the label for the address
      * @return
      * @throws Exception network problems
      */
@@ -41,7 +49,7 @@ public interface IWalletDAO {
 
     /**
      * Saves the wallet information used to access the wallet
-     * @param label the name of the wallet
+     * @param label the name of the address
      * @throws Exception network problems
      */
     public void save( String label) throws Exception;
