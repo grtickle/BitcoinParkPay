@@ -10,6 +10,7 @@ import edu.uc.bitcoinparkpay.dao.NetworkDAO;
  */
 public class Address {
 
+
     private String addressLabel;
 
     NetworkDAO networkDAO;
