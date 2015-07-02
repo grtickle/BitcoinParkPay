@@ -36,4 +36,10 @@ public class Address {
         return addressLabel;
     }
 
+    /**
+    public BigDecimal getBalance( String label) {
+        return null;
+    }
+     **/
+
 }
