@@ -6,14 +6,14 @@ import java.math.BigDecimal;
  * Created by Greg on 6/4/2015.
  */
 public class AddressDAOStub implements IAddressDAO {
-/**
+
     @Override
     public void createAddress(String label) throws Exception {
         if ( label == null) {
             throw new Exception("Error: No label given");
         }
     }
-**/
+
 
     @Override
     public String getAddress ( String label ) throws Exception {

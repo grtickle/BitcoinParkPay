@@ -12,7 +12,7 @@ public interface IAddressDAO {
      * @param label the name of the address
      * @throws Exception network problems
      */
-//public void createAddress( String label ) throws Exception;
+public void createAddress( String label ) throws Exception;
 
     /**
      * Gets the bitcoin address from the wallet
