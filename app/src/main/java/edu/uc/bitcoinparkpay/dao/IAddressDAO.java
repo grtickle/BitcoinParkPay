@@ -39,13 +39,13 @@ public void createAddress( String label ) throws Exception;
 
     /**
      * Sends bitcoin to another wallet address
-     * @param apiKey the account API Key
      * @param amount of bitcoin to send
+     * @param fromLabel The address to send from; refer to address by label
      * @param to The wallet address to send to
      * @param pin Account pin number
      * @throws Exception network problems
      */
-    public void send( String apiKey, BigDecimal amount, String to, String pin ) throws Exception;
+    public void send( BigDecimal amount, String fromLabel, String to, String pin ) throws Exception;
 
     /**
      * Saves the wallet information used to access the wallet
@@ -56,9 +56,11 @@ public void createAddress( String label ) throws Exception;
 
     /**
      * Gets network fee in bitcoin
+     * @param amount The bitcoin being sent
+     * @param to The address being sent to
      * @return fee
      * @throws Exception network problems
      */
-    public BigDecimal getNetworkFee () throws Exception;
+    public BigDecimal getNetworkFee ( BigDecimal amount, String to ) throws Exception;
 }
 
