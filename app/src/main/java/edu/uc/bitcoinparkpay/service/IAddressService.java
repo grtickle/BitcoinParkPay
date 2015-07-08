@@ -15,11 +15,11 @@ public interface IAddressService {
 
     /**
      Sends bitcoin to another address; checks for balance before calling AddressDAO.send
-     * @param apiKey the account API Key
      * @param amount of bitcoin to send
+     * @param fromLabel The address to send from; refer to address by label
      * @param to The address to send to
      * @param pin Account pin number
      * @throws Exception network problems
      */
-    public void makePayment(String apiKey, BigDecimal amount, String to, String pin) throws Exception;
+    public void makePayment(BigDecimal amount, String fromLabel, String to, String pin) throws Exception;
 }
