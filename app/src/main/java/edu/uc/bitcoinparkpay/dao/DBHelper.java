@@ -1,4 +1,4 @@
-package edu.uc.bitcoinparkpay;
+package edu.uc.bitcoinparkpay.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
