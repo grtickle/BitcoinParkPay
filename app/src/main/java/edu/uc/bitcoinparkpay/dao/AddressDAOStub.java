@@ -1,11 +1,17 @@
 package edu.uc.bitcoinparkpay.dao;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.math.BigDecimal;
+
+import edu.uc.bitcoinparkpay.DBHelper;
+
 
 /**
  * Created by Greg on 6/4/2015.
  */
 public class AddressDAOStub implements IAddressDAO {
+
 /**
     @Override
     public void createAddress(String label) throws Exception {
@@ -45,6 +51,19 @@ public class AddressDAOStub implements IAddressDAO {
 
     @Override
     public void save(String label) throws Exception {
+        //Get the data and save to the database
+        //SQLiteDatabase db = DBHelper.getWritableDatabase();
+
+        //Saves wallet info used to access wallet
+        //param label - the name of the address
+        //throws exception network problems
+        if (label == null) {
+            throw new Exception ("Error: address does not exist");
+        }
+        else if (label != null) {
+            //save wallet info
+
+        }
 
     }
 
