@@ -21,5 +21,5 @@ public interface IAddressService {
      * @param pin Account pin number
      * @throws Exception network problems
      */
-    public void makePayment(BigDecimal amount, String fromLabel, String to, String pin) throws Exception;
+    public void makePayment(double amount, String fromLabel, String to, String pin) throws Exception;
 }

@@ -14,7 +14,7 @@ public class AddressServiceStub implements IAddressService {
     }
 
     @Override
-    public void makePayment( BigDecimal amount, String fromLabel, String to, String pin ) throws Exception{
+    public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception{
 
     }
 }
