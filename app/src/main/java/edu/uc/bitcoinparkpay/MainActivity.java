@@ -2,16 +2,22 @@ package edu.uc.bitcoinparkpay;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
+    //DBHelper mydb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //mydb = new DBHelper(this);
+        //ArrayList array_list = mydb.getAllInfo();
     }
 
     @Override
@@ -35,4 +41,5 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }
