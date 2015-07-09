@@ -36,9 +36,9 @@ public class AddressDAOStub implements IAddressDAO {
     }
 
     @Override
-    public void send(BigDecimal amount, String fromLabel, String to, String pin) throws Exception {
+    public void send(double amount, String fromLabel, String to, String pin) throws Exception {
 
-        if ( fromLabel == null || amount == null || to == null || pin == null) {
+        if ( fromLabel == null || to == null || pin == null) {
             throw new Exception ("Error: missing parameter");
         }
     }

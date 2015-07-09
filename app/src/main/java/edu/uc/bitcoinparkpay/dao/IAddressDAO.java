@@ -45,7 +45,7 @@ public void createAddress( String label ) throws Exception;
      * @param pin Account pin number
      * @throws Exception network problems
      */
-    public void send( BigDecimal amount, String fromLabel, String to, String pin ) throws Exception;
+    public void send( double amount, String fromLabel, String to, String pin ) throws Exception;
 
     /**
      * Saves the wallet information used to access the wallet
