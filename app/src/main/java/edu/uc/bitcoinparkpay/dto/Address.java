@@ -17,8 +17,7 @@ public class Address {
 
         //Create new wallet
         addressDAO = new AddressDAO();
-        addressDAO.createWallet(label);
-
+        addressDAO.createAddress(label);
     }
 
     public String getAddressLabel() {
