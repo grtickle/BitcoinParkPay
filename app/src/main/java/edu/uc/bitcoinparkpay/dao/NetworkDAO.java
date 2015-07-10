@@ -3,6 +3,7 @@ package edu.uc.bitcoinparkpay.dao;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -44,14 +45,9 @@ public class NetworkDAO {
         HttpClient httpClient = new DefaultHttpClient();
 
         // what URI do we want to receive?
-        HttpGet httpGet = new HttpGet(uri);
+        HttpPost httpPost = new HttpPost(uri);
 
-        // handle the response
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-
-        // access the URI and get back the return data.
-        String returnData = null;
-
-        returnData = httpClient.execute(httpGet, responseHandler);
+        // access the URI
+        httpClient.execute(httpPost);
     }
 }
