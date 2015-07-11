@@ -61,6 +61,6 @@ public void createAddress( String label ) throws Exception;
      * @return fee
      * @throws Exception network problems
      */
-    public BigDecimal getNetworkFee ( BigDecimal amount, String to ) throws Exception;
+    public double getNetworkFee ( double amount, String to ) throws Exception;
 }
 

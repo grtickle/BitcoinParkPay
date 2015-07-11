@@ -3,6 +3,8 @@ package edu.uc.bitcoinparkpay.dao;
 import android.accounts.NetworkErrorException;
 import android.util.Log;
 
+import org.apache.http.client.HttpResponseException;
+
 import java.math.BigDecimal;
 
 /**
@@ -22,7 +24,7 @@ public class AddressDAO implements IAddressDAO {
                 String apiKey = "d33a-68b8-59d4-ed27";
                 networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
             } catch ( NetworkErrorException e ){
-                Log.i( "tag", "Error: No network connection." );
+                Log.i( "ERROR:", "No network connection." );
             }
         }
     }
@@ -42,7 +44,7 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( NetworkErrorException e ) {
-            Log.i( "tag", "Error: No network connection." );
+            Log.i( "ERROR:", "No network connection." );
         }
 
         //Parse data and store balance in BigDecimal
@@ -65,7 +67,7 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( NetworkErrorException e ) {
-            Log.i( "tag", "Error: No network connection." );
+            Log.i( "ERROR: ", "No network connection." );
         }
 
         //Parse data and store balance in BigDecimal
@@ -90,7 +92,7 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( NetworkErrorException e ) {
-            Log.i( "tag", "Error: No network connection." );
+            Log.i( "ERROR: ", "No network connection." );
         }
 
         //Parse data and store balance in BigDecimal
@@ -118,7 +120,7 @@ public class AddressDAO implements IAddressDAO {
         try{
             networkDAO.send(uriAddress);
         } catch ( NetworkErrorException e){
-            Log.i( "tag", "Error: No network connection." );
+            Log.i( "ERROR: ", "No network connection." );
         }
     }
 
@@ -128,7 +130,7 @@ public class AddressDAO implements IAddressDAO {
     }
 
     @Override
-    public BigDecimal getNetworkFee( BigDecimal amount, String to ) throws Exception {
+    public double getNetworkFee( double amount, String to ) throws Exception {
         networkDAO = new NetworkDAO();
 
         //URI that returns estimated network fee
@@ -138,22 +140,24 @@ public class AddressDAO implements IAddressDAO {
                 + amount + "&to_addresses=" + to;
 
         String data = "";
+        double fee = 0.00001;
         try{
             //Fetch address data from block.io
-            data = networkDAO.fetch( uriAddress );
-        } catch ( NetworkErrorException e ) {
-            Log.i( "tag", "Error: No network connection." );
-        }
+            data = networkDAO.fetch(uriAddress);
 
-        //Parse data and store balance in BigDecimal
-        BigDecimal fee;
-        String lines[] = data.split("\\r?\\n");
-        try {
-            fee = new BigDecimal( lines[18].substring(19, 25));
-            return fee;
-        } catch ( IndexOutOfBoundsException e) {
-            Log.e("ERROR: ", "getBitcoinPrice()" + e);
-            return fee = new BigDecimal(0.0);
+            //Parse data and store balance in BigDecimal
+            String lines[] = data.split("\\r?\\n");
+            try {
+                fee = Double.parseDouble(lines[18].substring(19, 25));
+                return fee;
+            } catch ( IndexOutOfBoundsException e) {
+                Log.e("ERROR: ", "getBitcoinPrice()" + e);
+
+            }
+        } catch ( HttpResponseException e ) {
+            Log.i("ERROR: ", "Not enough funds; AddressDAO");
+            throw new NetworkErrorException("Insufficient funds.");
         }
+        return fee;
     }
 }

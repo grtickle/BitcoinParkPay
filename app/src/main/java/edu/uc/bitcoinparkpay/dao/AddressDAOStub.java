@@ -49,8 +49,8 @@ public class AddressDAOStub implements IAddressDAO {
     }
 
     @Override
-    public BigDecimal getNetworkFee( BigDecimal amount, String to ) throws Exception {
-        BigDecimal fee = new BigDecimal( 0.0001);
+    public double getNetworkFee( double amount, String to ) throws Exception {
+        double fee =  0.0001;
         return fee;
     }
 }

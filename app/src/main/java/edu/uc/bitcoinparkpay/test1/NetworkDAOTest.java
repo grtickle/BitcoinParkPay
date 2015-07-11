@@ -1,6 +1,5 @@
 package edu.uc.bitcoinparkpay.test1;
 
-import android.accounts.NetworkErrorException;
 import android.util.Log;
 
 import junit.framework.TestCase;
@@ -72,8 +71,8 @@ public class NetworkDAOTest extends TestCase{
     public void testGetNetworkFee() throws Exception{
         addressDAO = new AddressDAO();
 
-        BigDecimal amount = new BigDecimal( 0.001 );
-        BigDecimal fee = new BigDecimal(String.valueOf(addressDAO.getNetworkFee(amount, "2MsssGRohNs4WgofjsxfCA2WzW6GrtYoLie")));
+        double amount = .1;
+        BigDecimal fee = new BigDecimal(String.valueOf(addressDAO.getNetworkFee(amount, "2N8o4HyRanaGSPmeve5qJwEuJK2fBo4CvCu")));
         assertNotNull(fee);
         Log.i("BALANCE: ", fee.toString());
     }
@@ -115,13 +114,14 @@ public void testNetwork() throws Exception{
 }
 **/
 
+
     public void testMakePayment() throws Exception{
 
-        double amount = .002;
+        double amount = .1;
         //BigDecimal amount = new BigDecimal(number);
         try{
-            addressService.makePayment(amount, "test", "default", "10293847");
-        } catch ( NetworkErrorException e) {
+            addressService.makePayment(amount, "test", "2MsssGRohNs4WgofjsxfCA2WzW6GrtYoLie", "10293847");
+        } catch ( Exception e) {
             Log.i("MAKE PAYMENT: ", "FAILED");
         }
     }
