@@ -9,6 +9,10 @@ import java.math.BigDecimal;
 
 /**
  * Created by Greg on 6/4/2015.
+ * This class interacts with the bitcoin wallet hosted on block.io. These methods use API calls to
+ * get wallet information such as addresses, balance, and network fee estimates. The send method
+ * tells block.io to send bitcoin from one address to another. The block.io wallet is accessed by
+ * an API key that is sent in the URI.
  */
 public class AddressDAO implements IAddressDAO {
 
