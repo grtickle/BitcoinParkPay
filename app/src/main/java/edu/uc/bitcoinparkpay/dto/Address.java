@@ -7,12 +7,11 @@ import edu.uc.bitcoinparkpay.dao.AddressDAO;
  */
 public class Address {
 
-
     private String addressLabel;
 
     AddressDAO addressDAO;
 
-    public Address(String label) throws Exception{
+    public Address(String label) throws Exception {
         this.addressLabel = label;
 
         //Create new wallet
@@ -21,7 +20,6 @@ public class Address {
     }
 
     public String getAddressLabel() {
-        return addressLabel;
+        return this.addressLabel;
     }
-
 }

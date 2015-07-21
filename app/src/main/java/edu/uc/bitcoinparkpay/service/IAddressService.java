@@ -8,10 +8,10 @@ import java.math.BigDecimal;
 public interface IAddressService {
 
     /**
-     *
+     * Gets the dollar balance from an account.
      * @return the account balance in USD.
      */
-    public BigDecimal getDollarBalance( String label ) throws Exception;
+    public BigDecimal getDollarBalance(String label) throws Exception;
 
     /**
      Sends bitcoin to another address; checks for balance before calling AddressDAO.send

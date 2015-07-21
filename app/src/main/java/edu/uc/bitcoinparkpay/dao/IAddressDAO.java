@@ -12,7 +12,7 @@ public interface IAddressDAO {
      * @param label the name of the address
      * @throws Exception network problems
      */
-public void createAddress( String label ) throws Exception;
+    public void createAddress(String label) throws Exception;
 
     /**
      * Gets the bitcoin address from the wallet
@@ -20,7 +20,7 @@ public void createAddress( String label ) throws Exception;
      * @return
      * @throws Exception
      */
-    public String getAddress ( String label ) throws Exception;
+    public String getAddress (String label) throws Exception;
 
     /**
      * Gets balance of address in bitcoins
@@ -28,7 +28,7 @@ public void createAddress( String label ) throws Exception;
      * @return
      * @throws Exception network problems
      */
-    public BigDecimal getBitcoinBalance( String label ) throws Exception;
+    public BigDecimal getBitcoinBalance(String label) throws Exception;
 
     /**
      * Gets bitcoin price
@@ -45,14 +45,14 @@ public void createAddress( String label ) throws Exception;
      * @param pin Account pin number
      * @throws Exception network problems
      */
-    public void send( double amount, String fromLabel, String to, String pin ) throws Exception;
+    public void send(double amount, String fromLabel, String to, String pin) throws Exception;
 
     /**
      * Saves the wallet information used to access the wallet
      * @param label the name of the address
      * @throws Exception network problems
      */
-    public void save( String label) throws Exception;
+    public void save(String label) throws Exception;
 
     /**
      * Gets network fee in bitcoin
@@ -61,6 +61,6 @@ public void createAddress( String label ) throws Exception;
      * @return fee
      * @throws Exception network problems
      */
-    public double getNetworkFee ( double amount, String to ) throws Exception;
+    public double getNetworkFee (double amount, String to) throws Exception;
 }
 

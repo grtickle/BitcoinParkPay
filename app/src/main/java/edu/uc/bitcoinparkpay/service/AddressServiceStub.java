@@ -8,13 +8,13 @@ import java.math.BigDecimal;
 public class AddressServiceStub implements IAddressService {
 
     @Override
-    public BigDecimal getDollarBalance( String label) throws Exception{
+    public BigDecimal getDollarBalance(String label) throws Exception {
         BigDecimal balance = new BigDecimal(25.00);
         return balance;
     }
 
     @Override
-    public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception{
+    public void makePayment(double amount, String fromLabel, String to, String pin) throws Exception {
 
     }
 }

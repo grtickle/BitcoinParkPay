@@ -15,17 +15,17 @@ public class AddressService implements IAddressService {
     AddressDAO addressDAO;
 
     @Override
-    public BigDecimal getDollarBalance( String label ) throws Exception {
+    public BigDecimal getDollarBalance(String label) throws Exception {
         addressDAO = new AddressDAO();
 
         //Multiply the bitcoin balance by the bitcoin price to get balance in USD
-        BigDecimal balance = addressDAO.getBitcoinBalance( label ).multiply(addressDAO.getBitcoinPrice());
+        BigDecimal balance = addressDAO.getBitcoinBalance(label).multiply(addressDAO.getBitcoinPrice());
 
         return balance;
     }
 
     @Override
-    public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception {
+    public void makePayment(double amount, String fromLabel, String to, String pin) throws Exception {
         addressDAO = new AddressDAO();
 
 
@@ -33,22 +33,22 @@ public class AddressService implements IAddressService {
 
         //Set flag to determine if sufficient funds; if 0 or 1, send; otherwise not enough funds
         int flag;
-        try{
-            //Get network fee; if not sufficient funds, will throw exception that will catch and
-            //set flag to -1
-            BigDecimal amountFee = new BigDecimal(addressDAO.getNetworkFee( amount, to ));
+        try {
+            // Get network fee; if not sufficient funds, will throw exception that will catch and
+            // set flag to -1
+            BigDecimal amountFee = new BigDecimal(addressDAO.getNetworkFee(amount, to));
 
-            //Compare the address balance + network fee with the amount to be sent
-            flag = addressDAO.getBitcoinBalance( fromLabel).add(amountFee).compareTo( amountBD );
-        } catch ( NetworkErrorException e){
+            // Compare the address balance + network fee with the amount to be sent
+            flag = addressDAO.getBitcoinBalance(fromLabel).add(amountFee).compareTo(amountBD);
+        } catch (NetworkErrorException e) {
             flag = -1;
         }
 
 
-        //Check for sufficient funds in balance
-        if ( flag == 0 || flag == 1 ){
+        // Check for sufficient funds in balance
+        if (flag == 0 || flag == 1){
             //Send funds
-            addressDAO.send( amount, fromLabel, to, pin );
+            addressDAO.send(amount, fromLabel, to, pin);
         } else {
             Log.i("ERROR: ", "Not enough funds; AddressService");
             throw new Exception("Insufficient funds.");

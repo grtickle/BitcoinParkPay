@@ -9,25 +9,22 @@ public class AddressDAOStub implements IAddressDAO {
 
     @Override
     public void createAddress(String label) throws Exception {
-        if ( label == null) {
+        if (label == null) {
             throw new Exception("Error: No label given");
         }
     }
 
-
     @Override
-    public String getAddress ( String label ) throws Exception {
+    public String getAddress(String label) throws Exception {
         String address = "90e9cf87vc6v909s9sd98v7vb8ds9s";
         return address;
     }
-
 
     @Override
     public BigDecimal getBitcoinBalance(String label) throws Exception {
         BigDecimal balance = new BigDecimal("0.001");
         return balance;
     }
-
 
     @Override
     public BigDecimal getBitcoinPrice() throws Exception {
@@ -37,8 +34,7 @@ public class AddressDAOStub implements IAddressDAO {
 
     @Override
     public void send(double amount, String fromLabel, String to, String pin) throws Exception {
-
-        if ( fromLabel == null || to == null || pin == null) {
+        if (fromLabel == null || to == null || pin == null) {
             throw new Exception ("Error: missing parameter");
         }
     }
@@ -49,7 +45,7 @@ public class AddressDAOStub implements IAddressDAO {
     }
 
     @Override
-    public double getNetworkFee( double amount, String to ) throws Exception {
+    public double getNetworkFee(double amount, String to) throws Exception {
         double fee =  0.0001;
         return fee;
     }

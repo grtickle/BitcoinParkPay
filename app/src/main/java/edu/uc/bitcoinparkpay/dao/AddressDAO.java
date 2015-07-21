@@ -5,7 +5,9 @@ import android.util.Log;
 
 import org.apache.http.client.HttpResponseException;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.ProtocolException;
 
 /**
  * Created by Greg on 6/4/2015.
@@ -19,23 +21,22 @@ public class AddressDAO implements IAddressDAO {
     NetworkDAO networkDAO;
 
     @Override
-    public void createAddress( String label ) throws Exception {
+    public void createAddress(String label) throws Exception {
         if ( label == null ) {
             throw new Exception( "Error: No label given" );
         } else {
             try{
                 //*******Pull api keys from database*******
                 String apiKey = "d33a-68b8-59d4-ed27";
-                networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
-            } catch ( NetworkErrorException e ){
-                Log.i( "ERROR:", "No network connection." );
+                networkDAO.send("https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label);
+            } catch (NetworkErrorException e){
+                Log.i("ERROR:", "No network connection.");
             }
         }
     }
 
-
     @Override
-    public String getAddress ( String label ) throws Exception {
+    public String getAddress (String label) throws Exception {
         networkDAO = new NetworkDAO();
 
         //URI that returns address
@@ -46,9 +47,9 @@ public class AddressDAO implements IAddressDAO {
         String data = "";
         try{
             //Fetch address data from block.io
-            data = networkDAO.fetch( uriAddress );
-        } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR:", "No network connection." );
+            data = networkDAO.fetch(uriAddress);
+        } catch (NetworkErrorException e) {
+            Log.i("ERROR:", "No network connection.");
         }
 
         //Parse data and store balance in BigDecimal
@@ -58,7 +59,7 @@ public class AddressDAO implements IAddressDAO {
     }
 
     @Override
-    public BigDecimal getBitcoinBalance( String label ) throws Exception {
+    public BigDecimal getBitcoinBalance(String label) throws Exception {
         networkDAO = new NetworkDAO();
 
         //URI that returns balance
@@ -67,20 +68,19 @@ public class AddressDAO implements IAddressDAO {
         String uriAddress = "https://block.io/api/v2/get_address_balance/?api_key=" + apiKey + "&labels=" + label;
 
         String data = "";
-        try{
+        try {
             //Fetch address data from block.io
-            data = networkDAO.fetch( uriAddress );
-        } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR: ", "No network connection." );
+            data = networkDAO.fetch(uriAddress);
+        } catch (NetworkErrorException e) {
+            Log.i("ERROR: ", "No network connection.");
         }
 
         //Parse data and store balance in BigDecimal
         String lines[] = data.split("\\r?\\n");
-        BigDecimal balance = new BigDecimal( lines[11].substring(31, 41));
+        BigDecimal balance = new BigDecimal(lines[11].substring(31, 41));
 
         return balance;
     }
-
 
     @Override
     public BigDecimal getBitcoinPrice() throws Exception {
@@ -92,27 +92,27 @@ public class AddressDAO implements IAddressDAO {
         String uriAddress = "https://block.io/api/v2/get_current_price/?api_key=" + apiKey + "&price_base=USD";
 
         String data = "";
-        try{
+        try {
             //Fetch address data from block.io
-            data = networkDAO.fetch( uriAddress );
-        } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR: ", "No network connection." );
+            data = networkDAO.fetch(uriAddress);
+        } catch (NetworkErrorException e) {
+            Log.i("ERROR: ", "No network connection.");
         }
 
         //Parse data and store balance in BigDecimal
-        BigDecimal price;
+        BigDecimal price = new BigDecimal(0.0);
         String lines[] = data.split("\\r?\\n");
         try {
-            price = new BigDecimal( lines[18].substring(19, 25));
+            price = new BigDecimal(lines[18].substring(19, 25));
             return price;
-        } catch ( IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             Log.e("ERROR: ", "getBitcoinPrice()" + e);
-            return price = new BigDecimal(0.0);
+            return price;
         }
     }
 
     @Override
-    public void send( double amount, String fromLabel, String to, String pin ) throws Exception {
+    public void send(double amount, String fromLabel, String to, String pin) throws Exception {
         networkDAO = new NetworkDAO();
 
         //*******Get "to" address from camera QR code scan*******
@@ -121,20 +121,20 @@ public class AddressDAO implements IAddressDAO {
         String uriAddress = "https://block.io/api/v2/withdraw_from_labels/?api_key=" + apiKey + "&from_labels=" + fromLabel +
                 "&to_addresses=" + to + "&amounts=" + amount + "&pin=" + pin;
 
-        try{
+        try {
             networkDAO.send(uriAddress);
-        } catch ( NetworkErrorException e){
-            Log.i( "ERROR: ", "No network connection." );
+        } catch (NetworkErrorException e) {
+            Log.i("ERROR: ", "No network connection.");
         }
     }
 
     @Override
     public void save(String label) throws Exception {
-
+        // You should not leave this method un-implemented.
     }
 
     @Override
-    public double getNetworkFee( double amount, String to ) throws Exception {
+    public double getNetworkFee(double amount, String to) throws Exception {
         networkDAO = new NetworkDAO();
 
         //URI that returns estimated network fee
@@ -144,7 +144,7 @@ public class AddressDAO implements IAddressDAO {
                 + amount + "&to_addresses=" + to;
 
         String data = "";
-        double fee = 0.00001;
+        double fee = 0.0001;
         try{
             //Fetch address data from block.io
             data = networkDAO.fetch(uriAddress);
@@ -154,11 +154,11 @@ public class AddressDAO implements IAddressDAO {
             try {
                 fee = Double.parseDouble(lines[18].substring(19, 25));
                 return fee;
-            } catch ( IndexOutOfBoundsException e) {
+            } catch (IndexOutOfBoundsException e) {
                 Log.e("ERROR: ", "getBitcoinPrice()" + e);
 
             }
-        } catch ( HttpResponseException e ) {
+        } catch (IOException e) {
             Log.i("ERROR: ", "Not enough funds; AddressDAO");
             throw new NetworkErrorException("Insufficient funds.");
         }

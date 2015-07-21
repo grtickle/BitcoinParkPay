@@ -11,11 +11,11 @@ import edu.uc.bitcoinparkpay.service.AddressService;
 /**
  * Created by Greg on 5/31/2015.
  */
-public class NetworkDAOTest extends TestCase{
+public class NetworkDAOTest extends TestCase {
+
     NetworkDAO networkDAO;
     AddressDAO addressDAO;
     AddressService addressService;
-
 
     @Override
     protected void setUp() throws Exception {
@@ -114,17 +114,15 @@ public void testNetwork() throws Exception{
 }
 **/
 
-
     public void testMakePayment() throws Exception{
 
         double amount = .1;
         //BigDecimal amount = new BigDecimal(number);
-        try{
+        try {
             addressService.makePayment(amount, "test", "2MsssGRohNs4WgofjsxfCA2WzW6GrtYoLie", "10293847");
-        } catch ( Exception e) {
+        } catch (Exception e) {
             Log.i("MAKE PAYMENT: ", "FAILED");
         }
     }
-
 
 }
