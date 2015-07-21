@@ -120,7 +120,7 @@ public class AddressDAO implements IAddressDAO {
         String apiKey = "d33a-68b8-59d4-ed27";
         String uriAddress = "https://block.io/api/v2/withdraw_from_labels/?api_key=" + apiKey + "&from_labels=" + fromLabel +
                 "&to_addresses=" + to + "&amounts=" + amount + "&pin=" + pin;
-
+        // to is a very poorly named variable. you should name this something meaningful.
         try{
             networkDAO.send(uriAddress);
         } catch ( NetworkErrorException e){
