@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  */
 public class AddressDAO implements IAddressDAO {
 
-    NetworkDAO networkDAO;
+    NetworkDAO networkDAO = new NetworkDAO();
 
     @Override
     public void createAddress( String label ) throws Exception {
@@ -36,8 +36,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public String getAddress ( String label ) throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns address
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";
@@ -59,8 +57,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public BigDecimal getBitcoinBalance( String label ) throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns balance
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";
@@ -84,8 +80,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public BigDecimal getBitcoinPrice() throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns price
         //*******Pull api keys from database*******
         String apiKey = "3bb2-81fc-a60a-3e7c";
@@ -113,8 +107,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public void send( double amount, String fromLabel, String to, String pin ) throws Exception {
-        networkDAO = new NetworkDAO();
-
         //*******Get "to" address from camera QR code scan*******
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";
@@ -135,8 +127,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public double getNetworkFee( double amount, String to ) throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns estimated network fee
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";

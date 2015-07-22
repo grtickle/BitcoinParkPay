@@ -12,12 +12,10 @@ import edu.uc.bitcoinparkpay.dao.AddressDAO;
  */
 public class AddressService implements IAddressService {
 
-    AddressDAO addressDAO;
+    AddressDAO addressDAO = new AddressDAO();;
 
     @Override
     public BigDecimal getDollarBalance( String label ) throws Exception {
-        addressDAO = new AddressDAO();
-
         //Multiply the bitcoin balance by the bitcoin price to get balance in USD
         BigDecimal balance = addressDAO.getBitcoinBalance( label ).multiply(addressDAO.getBitcoinPrice());
 
@@ -26,9 +24,6 @@ public class AddressService implements IAddressService {
 
     @Override
     public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception {
-        addressDAO = new AddressDAO();
-
-
         BigDecimal amountBD = new BigDecimal(amount);
 
         //Set flag to determine if sufficient funds; if 0 or 1, send; otherwise not enough funds
