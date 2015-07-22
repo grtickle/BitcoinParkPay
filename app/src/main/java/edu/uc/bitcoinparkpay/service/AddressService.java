@@ -24,8 +24,9 @@ public class AddressService implements IAddressService {
         return balance;
     }
 
+    //Some Java doc might be nice here. What exactly does this method do to make the payment?
     @Override
-    public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception {
+    public void makePayment( double amount, String fromLabel, String to, String pin) throws Exception {
         addressDAO = new AddressDAO();
 
 
@@ -39,7 +40,7 @@ public class AddressService implements IAddressService {
             BigDecimal amountFee = new BigDecimal(addressDAO.getNetworkFee( amount, to ));
 
             //Compare the address balance + network fee with the amount to be sent
-            flag = addressDAO.getBitcoinBalance( fromLabel).add(amountFee).compareTo( amountBD );
+            flag = addressDAO.getBitcoinBalance(fromLabel).add(amountFee).compareTo(amountBD);
         } catch ( NetworkErrorException e){
             flag = -1;
         }

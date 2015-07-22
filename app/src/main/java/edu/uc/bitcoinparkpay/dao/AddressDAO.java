@@ -16,10 +16,12 @@ import java.math.BigDecimal;
  */
 public class AddressDAO implements IAddressDAO {
 
-    NetworkDAO networkDAO;
+    NetworkDAO networkDAO = new NetworkDAO(); //Would this have to be instantiated?
 
+    //Does that URL create a new address? I'm guessing so, since it seems to tne the name of the file
+    //at the end of it.
     @Override
-    public void createAddress( String label ) throws Exception {
+    public void createAddress( String label ) throws Exception { //I'm a little confused as to what this label does.
         if ( label == null ) {
             throw new Exception( "Error: No label given" );
         } else {
@@ -28,35 +30,42 @@ public class AddressDAO implements IAddressDAO {
                 String apiKey = "d33a-68b8-59d4-ed27";
                 networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
             } catch ( NetworkErrorException e ){
-                Log.i( "ERROR:", "No network connection." );
+                //Here's a link of the different log methods. It might be more appropiate in this case
+                //to use Log.e()
+                //http://stackoverflow.com/questions/7959263/android-log-v-log-d-log-i-log-w-log-e-when-to-use-each-one
+                Log.e( "ERROR:", "No network connection." );
             }
         }
     }
 
-
+    //Should we also put this in a try-catch?
     @Override
     public String getAddress ( String label ) throws Exception {
-        networkDAO = new NetworkDAO();
+        String address = null;
+        try {
+            networkDAO = new NetworkDAO();
 
-        //URI that returns address
-        //*******Pull api keys from database*******
-        String apiKey = "d33a-68b8-59d4-ed27";
-        String uriAddress = "https://block.io/api/v2/get_address_by_label/?api_key=" + apiKey + "&label=" + label;
+            //URI that returns address
+            //*******Pull api keys from database*******
+            String apiKey = "d33a-68b8-59d4-ed27";
+            String uriAddress = "https://block.io/api/v2/get_address_by_label/?api_key=" + apiKey + "&label=" + label;
 
-        String data = "";
-        try{
             //Fetch address data from block.io
-            data = networkDAO.fetch( uriAddress );
-        } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR:", "No network connection." );
+            String data = networkDAO.fetch(uriAddress);
+
+            //Parse data and store balance in BigDecimal
+            String lines[] = data.split("\\r?\\n");
+            address = lines[5].substring(13, 52);
+
+        } catch (NetworkErrorException e) {
+            Log.e( "ERROR:", "The address could not be retrieved. " );
         }
 
-        //Parse data and store balance in BigDecimal
-        String lines[] = data.split("\\r?\\n");
-        String address = lines[5].substring(13, 52);
         return address;
     }
 
+    //I could be wrong, and both methods work, I suppose I just think one is more clean in terms
+    //of the try-catch implementations
     @Override
     public BigDecimal getBitcoinBalance( String label ) throws Exception {
         networkDAO = new NetworkDAO();
@@ -71,7 +80,7 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR: ", "No network connection." );
+            Log.e( "ERROR: ", "No network connection." );
         }
 
         //Parse data and store balance in BigDecimal
@@ -96,8 +105,9 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR: ", "No network connection." );
+            Log.e( "ERROR: ", "No network connection." );
         }
+
 
         //Parse data and store balance in BigDecimal
         BigDecimal price;
@@ -112,10 +122,11 @@ public class AddressDAO implements IAddressDAO {
     }
 
     @Override
-    public void send( double amount, String fromLabel, String to, String pin ) throws Exception {
+    public void send(double amount, String fromLabel, String to, String pin) throws Exception {
         networkDAO = new NetworkDAO();
 
         //*******Get "to" address from camera QR code scan*******
+        //I will be interested to see how this works
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";
         String uriAddress = "https://block.io/api/v2/withdraw_from_labels/?api_key=" + apiKey + "&from_labels=" + fromLabel +
@@ -124,7 +135,7 @@ public class AddressDAO implements IAddressDAO {
         try{
             networkDAO.send(uriAddress);
         } catch ( NetworkErrorException e){
-            Log.i( "ERROR: ", "No network connection." );
+            Log.e( "ERROR: ", "No network connection." );
         }
     }
 
@@ -159,7 +170,7 @@ public class AddressDAO implements IAddressDAO {
 
             }
         } catch ( HttpResponseException e ) {
-            Log.i("ERROR: ", "Not enough funds; AddressDAO");
+            Log.e("ERROR: ", "Not enough funds; AddressDAO");
             throw new NetworkErrorException("Insufficient funds.");
         }
         return fee;
