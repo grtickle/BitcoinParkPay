@@ -17,6 +17,8 @@ public class Address {
 
         //Create new wallet
         addressDAO = new AddressDAO();
+        // I'm a huge fan of domain driven design but - if you have to make it, make sure
+        // this slow over-https mobile request is not hanging whole app UI
         addressDAO.createAddress(label);
     }
 

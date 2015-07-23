@@ -16,8 +16,13 @@ import java.math.BigDecimal;
  */
 public class AddressDAO implements IAddressDAO {
 
-    NetworkDAO networkDAO;
+    // nobody can change it while app is running, therefore hack into it
+    // and inject their own implementation maybe?
+    private NetworkDAO networkDAO = new NetworkDAO();
 
+    /**
+     * No javadoc
+     */
     @Override
     public void createAddress( String label ) throws Exception {
         if ( label == null ) {
@@ -26,9 +31,11 @@ public class AddressDAO implements IAddressDAO {
             try{
                 //*******Pull api keys from database*******
                 String apiKey = "d33a-68b8-59d4-ed27";
+                // was not instantiated in this method. Will raise NullPointer. I will make it class level
                 networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
             } catch ( NetworkErrorException e ){
-                Log.i( "ERROR:", "No network connection." );
+                // Could be other cause of error?
+                Log.i( "ERROR:", e.getMessage() );
             }
         }
     }
@@ -36,8 +43,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public String getAddress ( String label ) throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns address
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";
@@ -59,8 +64,6 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public BigDecimal getBitcoinBalance( String label ) throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns balance
         //*******Pull api keys from database*******
         String apiKey = "d33a-68b8-59d4-ed27";
@@ -84,14 +87,20 @@ public class AddressDAO implements IAddressDAO {
 
     @Override
     public BigDecimal getBitcoinPrice() throws Exception {
-        networkDAO = new NetworkDAO();
-
         //URI that returns price
         //*******Pull api keys from database*******
         String apiKey = "3bb2-81fc-a60a-3e7c";
         String uriAddress = "https://block.io/api/v2/get_current_price/?api_key=" + apiKey + "&price_base=USD";
 
         String data = "";
+        // I wouldn't make two try catch blocks, if NetworkErrorException on networdDao.fetch()
+        // then data == "", then expected IndexOutOfBoundsException. Its ok but I think general practice is
+        // not to use exceptions when you expect them to happen just for processing. Its an easy way out
+        // I agree, but to process exception there are a lot of processor operations need to happen
+        // and objects created and hell knows when picked up by garbage collector, vs one logical
+        // comparison happens fast. So just keep in mind not for exceptions to become standard practice
+        // in Android code since it can run on weak devices with limited memory, and java is well known
+        // to be very hungry for memory.
         try{
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
@@ -100,20 +109,17 @@ public class AddressDAO implements IAddressDAO {
         }
 
         //Parse data and store balance in BigDecimal
-        BigDecimal price;
         String lines[] = data.split("\\r?\\n");
         try {
-            price = new BigDecimal( lines[18].substring(19, 25));
-            return price;
+            return new BigDecimal( lines[18].substring(19, 25));
         } catch ( IndexOutOfBoundsException e) {
             Log.e("ERROR: ", "getBitcoinPrice()" + e);
-            return price = new BigDecimal(0.0);
+            return new BigDecimal(0.0);
         }
     }
 
     @Override
     public void send( double amount, String fromLabel, String to, String pin ) throws Exception {
-        networkDAO = new NetworkDAO();
 
         //*******Get "to" address from camera QR code scan*******
         //*******Pull api keys from database*******
