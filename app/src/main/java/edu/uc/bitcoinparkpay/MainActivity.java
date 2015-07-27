@@ -1,23 +1,42 @@
 package edu.uc.bitcoinparkpay;
 
+import android.accounts.NetworkErrorException;
+import android.app.ProgressDialog;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
+import edu.uc.bitcoinparkpay.dao.AddressDAO;
+import edu.uc.bitcoinparkpay.dao.DBHelper;
+import edu.uc.bitcoinparkpay.dto.Address;
+import edu.uc.bitcoinparkpay.service.AddressService;
 
 public class MainActivity extends ActionBarActivity {
-    //DBHelper mydb;
+    private DBHelper mydb;
+    private AddressService addressService;
+    private Address address;
+    private AddressDAO addressDAO;
+    private ProgressDialog progressBar;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //mydb = new DBHelper(this);
-        //ArrayList array_list = mydb.getAllInfo();
+        //Initialize database
+        mydb = new DBHelper(this);
+
+        //Initialize an address; this makes a network call, so the initializeAddress
+        //method runs in another thread
+        LoaderSyncTask loader = new LoaderSyncTask();
+        loader.execute();
+
+        //addressService = new AddressService(this);
+
     }
 
     @Override
@@ -41,5 +60,109 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+    public void initializeAddress() throws Exception{
+        //This app will use only one address for now to provide basic functionality.
+        //In future sprints, multiple users could be added
+
+        //if there is an address, load address into DTO.
+        Cursor cursor = mydb.getData(0);
+
+        if (cursor.getCount() == 1) {
+            Log.i("MESSAGE: ", "****** 1st Section *******");
+            // if we are here, we have exactly one result.
+            cursor.moveToFirst();
+
+            // instantiate the address object.
+            address = new Address();
+
+            // populate the address object.
+            address.setId(cursor.getInt(cursor.getColumnIndex("id")));
+            address.setAddress(cursor.getString(cursor.getColumnIndex("address")));
+            address.setAddress(cursor.getString(cursor.getColumnIndex("apiKey")));
+        } else {
+            Log.i("MESSAGE: ", "****** 2st Section ******");
+            try{
+                //If there is not an address on file, create one
+
+                //Create address
+                addressDAO = new AddressDAO();
+                addressDAO.createAddress("MAIN");
+
+                //Store address data in database
+                mydb.insertInfo("MAIN", "d33a-68b8-59d4-ed27");
+                address.setAddressLabel("MAIN");
+
+            } catch ( NetworkErrorException e) {
+                Log.e("ERROR: ", "Error in initializeAddress");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    class LoaderSyncTask extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+/**
+            // setup progress dialog
+            progressBar = new ProgressDialog(MainActivity.this);
+            progressBar.setCancelable(true);
+            progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            progressBar.setProgress(1);
+            progressBar.setMax(100);
+            progressBar.setMessage(getString(R.string.initializing_data));
+            progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",  new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // TODO Auto-generated method stub
+                    dialog.dismiss();
+                    cancel(true);
+                }
+            });
+            progressBar.show();
+ **/
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressBar.setProgress(values[0]);
+            // TODO Auto-generated method stub
+            super.onProgressUpdate(values);
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+                initializeAddress();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // TODO Auto-generated method stub
+            //progressBar.dismiss();
+
+            super.onPostExecute(result);
+        }
+
+        @Override
+        protected void onCancelled() {
+            // TODO Auto-generated method stub
+            super.onCancelled();
+        }
+    }
+
 
 }
