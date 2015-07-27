@@ -1,27 +1,46 @@
 package edu.uc.bitcoinparkpay.dto;
 
-import edu.uc.bitcoinparkpay.dao.AddressDAO;
-
 /**
  * Created by Greg on 6/29/2015.
  */
 public class Address {
 
-
+    // ID is unique only to this device.
+    private int id;
     private String addressLabel;
+    private String address;
+    private double bitcoinBalance;
 
-    AddressDAO addressDAO;
 
-    public Address(String label) throws Exception{
-        this.addressLabel = label;
+    public int getId() {
+        return id;
+    }
 
-        //Create new wallet
-        addressDAO = new AddressDAO();
-        addressDAO.createAddress(label);
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getAddressLabel() {
         return addressLabel;
     }
 
+    public void setAddressLabel(String addressLabel) {
+        this.addressLabel = addressLabel;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public double getBitcoinBalance() {
+        return bitcoinBalance;
+    }
+
+    public void setBitcoinBalance(double bitcoinBalance) {
+        this.bitcoinBalance = bitcoinBalance;
+    }
 }
