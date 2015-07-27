@@ -19,12 +19,13 @@ public class AddressDAO implements IAddressDAO {
     NetworkDAO networkDAO;
 
     @Override
-    public void createAddress( String label ) throws Exception {
+    public void createAddress( String label) throws Exception {
+        networkDAO = new NetworkDAO();
         if ( label == null ) {
-            throw new Exception( "Error: No label given" );
+            throw new Exception( "Error: No label or api key given" );
         } else {
             try{
-                //*******Pull api keys from database*******
+
                 String apiKey = "d33a-68b8-59d4-ed27";
                 networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
             } catch ( NetworkErrorException e ){
