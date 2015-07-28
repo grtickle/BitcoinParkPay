@@ -20,6 +20,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
  */
 public class NetworkDAO {
 
+    // Careful with deprecated because with some new library version could stop working
     public String fetch(String uri) throws Exception {
 
         // Http Client marries together a request and response.
