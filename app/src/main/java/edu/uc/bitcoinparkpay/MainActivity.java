@@ -97,6 +97,7 @@ public class MainActivity extends ActionBarActivity {
         //In future sprints, multiple users could be added
 
         //if there is an address, load address into DTO.
+        //Calling upon non-existent function
         Cursor cursor = mydb.getData(1);
 
         if (cursor.getCount() >= 1) {
@@ -115,6 +116,7 @@ public class MainActivity extends ActionBarActivity {
                 addressDAO.createAddress("MAIN");
 
                 //Store address data in database
+                //Calling upon non-existent function
                 mydb.insertInfo("MAIN", "d33a-68b8-59d4-ed27");
 
                 //Set address values
