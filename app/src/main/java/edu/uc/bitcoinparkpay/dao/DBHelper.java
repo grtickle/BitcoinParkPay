@@ -9,7 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Andrew on 6/30/2015.
@@ -18,16 +17,10 @@ import java.util.HashMap;
 //Added base values
 public class DBHelper extends SQLiteOpenHelper {
 
-    //Table info with columns, id, address, and apiKey
+    //Database info
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Wallet.db";
-    public static final String INFO_TABLE_NAME = "info";
-    public static final String INFO_COLUMN_ID = "id";
-    public static final String INFO_COLUMN_KEY = "apiKey";
-    public static final String INFO_COLUMN_ADDRESS = "address";
-    public static final String INFO_COLUMN_LABEL = "addressLabel";
-    public static final String INFO_COLUMN_BALANCE = "balance";
-    public HashMap hp;
+
 
     public final class InfoContract {
         // To prevent someone from accidentally instantiating the contract class,
@@ -38,12 +31,14 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     public static abstract class InfoEntry implements BaseColumns {
+        //TAddress
         public static final String TABLE_NAME_ADDRESSES = "TAddress";
         public static final String COLUMN_NAME_ID = "id";
         public static final String COLUMN_NAME_ADDRESS = "address";
         public static final String COLUMN_NAME_LABEL = "addressLabel";
         public static final String COLUMN_NAME_BALANCE = "balance";
 
+        //TKeys
         public static final String TABLE_NAME_KEYS = "TKeys";
         public static final String COLUMN_NAME_KEYS_ID = "id";
         public static final String COLUMN_NAME_KEYS = "keys";
@@ -61,7 +56,7 @@ public class DBHelper extends SQLiteOpenHelper {
                     InfoEntry.COLUMN_NAME_LABEL + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_BALANCE + DOUBLE_TYPE + COMMA_SEP +
                     " )" +
-                    "CREATE TABLE " + InfoEntry.TABLE_NAME_KEYS + " (" +
+            "CREATE TABLE " + InfoEntry.TABLE_NAME_KEYS + " (" +
                     InfoEntry._ID + " INTEGER PRIMARY KEY," +
                     InfoEntry.COLUMN_NAME_KEYS_ID + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_KEYS + TEXT_TYPE + COMMA_SEP +
@@ -142,7 +137,7 @@ public class DBHelper extends SQLiteOpenHelper {
         res.moveToFirst();
 
         while(res.isAfterLast() == false){
-            array_list.add(res.getString(res.getColumnIndex(INFO_COLUMN_ADDRESS)));
+            array_list.add(res.getString(res.getColumnIndex(InfoEntry.COLUMN_NAME_ADDRESS)));
             res.moveToNext();
         }
         return array_list;
