@@ -18,6 +18,7 @@ import edu.uc.bitcoinparkpay.dto.Address;
 import edu.uc.bitcoinparkpay.service.AddressService;
 
 public class MainActivity extends ActionBarActivity {
+    //No more DBHelper
     private DBHelper mydb;
     private AddressService addressService;
     private Address address;
@@ -34,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
         addressDAO = new AddressDAO();
 
         //Initialize database
+        //No more DBHelper
         mydb = new DBHelper(this);
 
         //Initialize an address; this makes a network call, so the initializeAddress
