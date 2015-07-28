@@ -6,13 +6,10 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
@@ -31,15 +28,21 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //SetBalanceAmmount(); This is ready to go, see comment bellow
+
+
+        address = new Address();
+        addressDAO = new AddressDAO();
 
         //Initialize database
         mydb = new DBHelper(this);
 
         //Initialize an address; this makes a network call, so the initializeAddress
-        //method runs in another thread
+        //method runs in another thread.
+        //Also, this class updates the TextView to show the address balance in the
+        //onPostExecute method
         LoaderSyncTask loader = new LoaderSyncTask();
         loader.execute();
+
 
         //addressService = new AddressService(this);
     }
@@ -53,10 +56,18 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
     }
 
-    //  public void SetBalanceAmmount(){
-    //    TextView txt = (TextView) findViewById(R.id.txtViewBalance);
-    //    txt = addressDAO.getBitcoinBalance(); Working, just needs input paramater of, label
-    //}
+    public void setBalanceAmount(){
+
+        TextView txt = (TextView) findViewById(R.id.txtViewBalance);
+        String balance = "";
+        try {
+            balance = "" + address.getBitcoinBalance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        txt.setText(balance);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -86,32 +97,29 @@ public class MainActivity extends ActionBarActivity {
         //In future sprints, multiple users could be added
 
         //if there is an address, load address into DTO.
-        Cursor cursor = mydb.getData(0);
+        Cursor cursor = mydb.getData(1);
 
-        if (cursor.getCount() == 1) {
-            Log.i("MESSAGE: ", "****** 1st Section *******");
+        if (cursor.getCount() >= 1) {
             // if we are here, we have exactly one result.
             cursor.moveToFirst();
-
-            // instantiate the address object.
-            address = new Address();
 
             // populate the address object.
             address.setId(cursor.getInt(cursor.getColumnIndex("id")));
             address.setAddress(cursor.getString(cursor.getColumnIndex("address")));
-            address.setAddress(cursor.getString(cursor.getColumnIndex("apiKey")));
+            address.setBitcoinBalance(addressDAO.getBitcoinBalance("MAIN").doubleValue());
         } else {
-            Log.i("MESSAGE: ", "****** 2st Section ******");
             try{
                 //If there is not an address on file, create one
 
                 //Create address
-                addressDAO = new AddressDAO();
                 addressDAO.createAddress("MAIN");
 
                 //Store address data in database
                 mydb.insertInfo("MAIN", "d33a-68b8-59d4-ed27");
+
+                //Set address values
                 address.setAddressLabel("MAIN");
+                address.setBitcoinBalance(0.0);
 
             } catch ( NetworkErrorException e) {
                 Log.e("ERROR: ", "Error in initializeAddress");
@@ -125,24 +133,24 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-/**
- // setup progress dialog
- progressBar = new ProgressDialog(MainActivity.this);
- progressBar.setCancelable(true);
- progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
- progressBar.setProgress(1);
- progressBar.setMax(100);
- progressBar.setMessage(getString(R.string.initializing_data));
- progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",  new DialogInterface.OnClickListener() {
+            /**
+             // setup progress dialog
+             progressBar = new ProgressDialog(MainActivity.this);
+             progressBar.setCancelable(true);
+             progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+             progressBar.setProgress(1);
+             progressBar.setMax(100);
+             progressBar.setMessage(getString(R.string.initializing_data));
+             progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",  new DialogInterface.OnClickListener() {
 
-@Override public void onClick(DialogInterface dialog, int which) {
-// TODO Auto-generated method stub
-dialog.dismiss();
-cancel(true);
-}
-});
- progressBar.show();
- **/
+            @Override public void onClick(DialogInterface dialog, int which) {
+            // TODO Auto-generated method stub
+            dialog.dismiss();
+            cancel(true);
+            }
+            });
+             progressBar.show();
+             **/
         }
 
 
@@ -170,6 +178,9 @@ cancel(true);
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
             //progressBar.dismiss();
+
+            //Set balance label
+            setBalanceAmount();
 
             super.onPostExecute(result);
         }
