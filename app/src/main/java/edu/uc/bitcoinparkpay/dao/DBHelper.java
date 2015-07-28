@@ -18,7 +18,7 @@ import java.util.HashMap;
 //Added base values
 public class DBHelper extends SQLiteOpenHelper {
 
-    //Table info with columns, id, address, and apiKey
+    //Table named "info" with columns: id, address, and apiKey
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "Wallet.db";
     public static final String INFO_TABLE_NAME = "info";
@@ -59,35 +59,38 @@ public class DBHelper extends SQLiteOpenHelper {
     //Creates Table
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // TODO Auto-generated method stub
+        //executes sql statement to create table
         db.execSQL(
                 "create table info " +
                         "(id integer primary key, address text, apiKey text)"
         );
     }
 
-    //Updates the table
+    //UUpgrade Statement
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // TODO Auto-generated method stub
+        //Upgrades database version and drops old version
         db.execSQL("DROP TABLE IF EXISTS info");
         onCreate(db);
     }
 
-    //Inserts info into Table
+    //Insert Statement
     public boolean insertInfo  (String addressLabel, String apiKey)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("address", addressLabel);
         contentValues.put("apiKey", apiKey);
+        
+        //insert values into table
         db.insert("info", null, contentValues);
         return true;
     }
 
-    //Gets Table data based on id
+    //Gets table data
     public Cursor getData(int id){
         SQLiteDatabase db = this.getReadableDatabase();
+        //get all values from the table on a specific id
         Cursor res =  db.rawQuery( "select * from info where id="+id+"", null );
         return res;
     }
@@ -99,32 +102,34 @@ public class DBHelper extends SQLiteOpenHelper {
         return numRows;
     }
 
-    //Updates value in table
+    //Update Statement
     public boolean updateInfo (Integer id, String address, String apiKey)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("address", address);
         contentValues.put("apiKey", apiKey);
+        //Updates table to match new values
         db.update("info", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }
 
-    //Deletes id
+    //Delete statement
     public Integer deleteInfo (Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
+        //Delete specific values in the table on a specific id
         return db.delete("info",
                 "id = ? ",
                 new String[] { Integer.toString(id) });
     }
 
-    //Gets all values in the Table
+    //Gets all values in the Table and return as an array list
     public ArrayList<String> getAllInfo()
     {
         ArrayList<String> array_list = new ArrayList<String>();
-
-        //hp = new HashMap();
+        
+        hp = new HashMap();
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor res =  db.rawQuery( "select * from info", null );
         res.moveToFirst();
