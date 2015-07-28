@@ -24,12 +24,13 @@ public class AddressDAO implements IAddressDAO {
      * No javadoc
      */
     @Override
-    public void createAddress( String label ) throws Exception {
+    public void createAddress( String label) throws Exception {
+        networkDAO = new NetworkDAO();
         if ( label == null ) {
-            throw new Exception( "Error: No label given" );
+            throw new Exception( "Error: No label or api key given" );
         } else {
             try{
-                //*******Pull api keys from database*******
+
                 String apiKey = "d33a-68b8-59d4-ed27";
                 // was not instantiated in this method. Will raise NullPointer. I will make it class level
                 networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
