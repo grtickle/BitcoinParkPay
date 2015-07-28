@@ -2,6 +2,7 @@ package edu.uc.bitcoinparkpay;
 
 import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -15,28 +16,29 @@ import android.widget.TextView;
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.DBHelper;
 import edu.uc.bitcoinparkpay.dto.Address;
+import edu.uc.bitcoinparkpay.dto.Key;
 import edu.uc.bitcoinparkpay.service.AddressService;
 
 public class MainActivity extends ActionBarActivity {
-    //No more DBHelper
     private DBHelper mydb;
     private AddressService addressService;
     private Address address;
     private AddressDAO addressDAO;
     private ProgressDialog progressBar;
+    private Key key;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         address = new Address();
         addressDAO = new AddressDAO();
+        key = new Key();
 
         //Initialize database
-        //No more DBHelper
         mydb = new DBHelper(this);
+
 
         //Initialize an address; this makes a network call, so the initializeAddress
         //method runs in another thread.
@@ -46,11 +48,12 @@ public class MainActivity extends ActionBarActivity {
         loader.execute();
 
 
+
         //addressService = new AddressService(this);
     }
 
     public void btnTakePhotoOnClicked(){
-    Intent intent = new Intent(this, CameraActivity.class);
+        Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
     public void btnMakePaymentOnClicked(){
@@ -93,36 +96,74 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
-    public void initializeAddress() throws Exception{
-        //This app will use only one address for now to provide basic functionality.
-        //In future sprints, multiple users could be added
-
-        //if there is an address, load address into DTO.
-        //Calling upon non-existent function
-        Cursor cursor = mydb.getData(1);
+    public void initializeKeys() {
+        //if there are keys, load keys into DTO.
+        Cursor cursor = mydb.getData(DBHelper.InfoEntry.TABLE_NAME_KEYS, 1);
 
         if (cursor.getCount() >= 1) {
             // if we are here, we have exactly one result.
             cursor.moveToFirst();
 
             // populate the address object.
-            address.setId(cursor.getInt(cursor.getColumnIndex("id")));
-            address.setAddress(cursor.getString(cursor.getColumnIndex("address")));
-            address.setBitcoinBalance(addressDAO.getBitcoinBalance("MAIN").doubleValue());
+            key.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_KEYS_ID)));
+            key.setApiKey(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_KEYS)));
+            key.setDescription(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION)));
+        } else {
+            //If there are no keys on file, create them
+
+
+            //Set key values
+            key.setId(1);
+            key.setApiKey("d33a-68b8-59d4-ed27");
+            key.setDescription("TESTNET");
+
+            //Store key data in database
+            ContentValues values = new ContentValues();
+            values.put(DBHelper.InfoEntry.COLUMN_NAME_KEYS_ID, key.getId());
+            values.put(DBHelper.InfoEntry.COLUMN_NAME_KEYS, key.getApiKey());
+            values.put(DBHelper.InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION, key.getDescription());
+            mydb.insertInfo(DBHelper.InfoEntry.TABLE_NAME_KEYS, values);
+        }
+    }
+
+
+
+    public void initializeAddress() throws Exception{
+        //This app will use only one address for now to provide basic functionality.
+        //In future sprints, multiple users could be added
+
+        //if there is an address, load address into DTO.
+        Cursor cursor = mydb.getData(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1);
+
+        if (cursor.getCount() >= 1) {
+            // if we are here, we have exactly one result.
+            cursor.moveToFirst();
+
+            // populate the address object.
+            address.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ID)));
+            address.setAddress(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS)));
+            address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
+            address.setBitcoinBalance(addressDAO.getBitcoinBalance(DBHelper.InfoEntry.COLUMN_NAME_LABEL).doubleValue());
+
         } else {
             try{
                 //If there is not an address on file, create one
 
                 //Create address
                 addressDAO.createAddress("MAIN");
+                //Get long address from block.io
+                String addressLongForm = addressDAO.getAddress("MAIN");
 
                 //Store address data in database
-                //Calling upon non-existent function
-                mydb.insertInfo("MAIN", "d33a-68b8-59d4-ed27");
+                ContentValues values = new ContentValues();
+                values.put(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS, addressLongForm);
+                values.put(DBHelper.InfoEntry.COLUMN_NAME_LABEL,"MAIN");
+                values.put(DBHelper.InfoEntry.COLUMN_NAME_BALANCE, 0.0);
+                mydb.insertInfo(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, values);
 
                 //Set address values
                 address.setAddressLabel("MAIN");
+                address.setAddress(addressLongForm);
                 address.setBitcoinBalance(0.0);
 
             } catch ( NetworkErrorException e) {
@@ -170,6 +211,9 @@ public class MainActivity extends ActionBarActivity {
         protected Void doInBackground(Void... params) {
             try {
                 initializeAddress();
+
+                //Insert API keys into database and into Key DTO
+                initializeKeys();
 
             } catch (Exception e) {
                 e.printStackTrace();
