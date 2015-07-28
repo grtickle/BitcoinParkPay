@@ -18,6 +18,7 @@ import edu.uc.bitcoinparkpay.dto.Address;
 import edu.uc.bitcoinparkpay.service.AddressService;
 
 public class MainActivity extends ActionBarActivity {
+    //No more DBHelper
     private DBHelper mydb;
     private AddressService addressService;
     private Address address;
@@ -34,6 +35,7 @@ public class MainActivity extends ActionBarActivity {
         addressDAO = new AddressDAO();
 
         //Initialize database
+        //No more DBHelper
         mydb = new DBHelper(this);
 
         //Initialize an address; this makes a network call, so the initializeAddress
@@ -97,6 +99,7 @@ public class MainActivity extends ActionBarActivity {
         //In future sprints, multiple users could be added
 
         //if there is an address, load address into DTO.
+        //Calling upon non-existent function
         Cursor cursor = mydb.getData(1);
 
         if (cursor.getCount() >= 1) {
@@ -115,6 +118,7 @@ public class MainActivity extends ActionBarActivity {
                 addressDAO.createAddress("MAIN");
 
                 //Store address data in database
+                //Calling upon non-existent function
                 mydb.insertInfo("MAIN", "d33a-68b8-59d4-ed27");
 
                 //Set address values

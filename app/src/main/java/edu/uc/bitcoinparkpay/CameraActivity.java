@@ -18,9 +18,11 @@ public class CameraActivity extends MainActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         //associate the layout with this activity.
+        //Cannot resolve "activity_camera"
         setContentView(R.layout.activity_camera);
 
         //access image
+        //Cannot resolve "imgPhoto"
         imgPhoto = (ImageView) findViewById(R.id.imgPhoto);
     }
 
