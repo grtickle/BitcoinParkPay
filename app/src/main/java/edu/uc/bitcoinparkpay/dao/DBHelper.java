@@ -90,7 +90,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //Gets table data
     public Cursor getData(int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        //get all values from the table on a specific id
+        //get all values from the table on the id
         Cursor res =  db.rawQuery( "select * from info where id="+id+"", null );
         return res;
     }
@@ -118,7 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public Integer deleteInfo (Integer id)
     {
         SQLiteDatabase db = this.getWritableDatabase();
-        //Delete specific values in the table on a specific id
+        //Delete values in the table on the id
         return db.delete("info",
                 "id = ? ",
                 new String[] { Integer.toString(id) });
