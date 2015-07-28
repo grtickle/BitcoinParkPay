@@ -27,28 +27,28 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String INFO_COLUMN_KEY = "apiKey";
     public HashMap hp;
 
-    public final class InfoContract {
-        // To prevent someone from accidentally instantiating the contract class,
-        // give it an empty constructor.
-        public InfoContract() {}
+    // public final class InfoContract {
+    //     // To prevent someone from accidentally instantiating the contract class,
+    //     // give it an empty constructor.
+    //     public InfoContract() {}
 
-        /* Inner class that defines the table contents */
-    }
+    //     /* Inner class that defines the table contents */
+    // }
 
-    public static abstract class InfoEntry implements BaseColumns {
-        public static final String TABLE_NAME = "entry";
-        public static final String COLUMN_NAME_ID = "id";
-        public static final String COLUMN_NAME_ADDRESS = "address";
-    }
+    // public static abstract class InfoEntry implements BaseColumns {
+    //     public static final String TABLE_NAME = "entry";
+    //     public static final String COLUMN_NAME_ID = "id";
+    //     public static final String COLUMN_NAME_ADDRESS = "address";
+    // }
 
-    private static final String TEXT_TYPE = "TEXT";
-    private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_ENTRIES =
-            "CREATE TABLE " + InfoEntry.TABLE_NAME + " (" +
-                    InfoEntry._ID + " INTEGER PRIMARY KEY," +
-                    InfoEntry.COLUMN_NAME_ID + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP +
-                    " )";
+    // private static final String TEXT_TYPE = "TEXT";
+    // private static final String COMMA_SEP = ",";
+    // private static final String SQL_CREATE_ENTRIES =
+    //         "CREATE TABLE " + InfoEntry.TABLE_NAME + " (" +
+    //                 InfoEntry._ID + " INTEGER PRIMARY KEY," +
+    //                 InfoEntry.COLUMN_NAME_ID + TEXT_TYPE + COMMA_SEP +
+    //                 InfoEntry.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP +
+    //                 " )";
 
     //Setting up Database
     public DBHelper(Context context)
