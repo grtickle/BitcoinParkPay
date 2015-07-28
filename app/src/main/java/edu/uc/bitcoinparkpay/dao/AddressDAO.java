@@ -16,13 +16,8 @@ import java.math.BigDecimal;
  */
 public class AddressDAO implements IAddressDAO {
 
-    // nobody can change it while app is running, therefore hack into it
-    // and inject their own implementation maybe?
     private NetworkDAO networkDAO = new NetworkDAO();
 
-    /**
-     * No javadoc
-     */
     @Override
     public void createAddress( String label) throws Exception {
         networkDAO = new NetworkDAO();
@@ -94,24 +89,11 @@ public class AddressDAO implements IAddressDAO {
         String uriAddress = "https://block.io/api/v2/get_current_price/?api_key=" + apiKey + "&price_base=USD";
 
         String data = "";
-        // I wouldn't make two try catch blocks, if NetworkErrorException on networdDao.fetch()
-        // then data == "", then expected IndexOutOfBoundsException. Its ok but I think general practice is
-        // not to use exceptions when you expect them to happen just for processing. Its an easy way out
-        // I agree, but to process exception there are a lot of processor operations need to happen
-        // and objects created and hell knows when picked up by garbage collector, vs one logical
-        // comparison happens fast. So just keep in mind not for exceptions to become standard practice
-        // in Android code since it can run on weak devices with limited memory, and java is well known
-        // to be very hungry for memory.
-        try{
-            //Fetch address data from block.io
-            data = networkDAO.fetch( uriAddress );
-        } catch ( NetworkErrorException e ) {
-            Log.i( "ERROR: ", "No network connection." );
-        }
 
-        //Parse data and store balance in BigDecimal
-        String lines[] = data.split("\\r?\\n");
         try {
+            //Parse data and store balance in BigDecimal
+            data = networkDAO.fetch( uriAddress );
+            String lines[] = data.split("\\r?\\n");
             return new BigDecimal( lines[18].substring(19, 25));
         } catch ( IndexOutOfBoundsException e) {
             Log.e("ERROR: ", "getBitcoinPrice()" + e);
