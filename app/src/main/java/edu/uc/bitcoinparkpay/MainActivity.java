@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
@@ -52,26 +53,7 @@ public class MainActivity extends ActionBarActivity {
         //addressService = new AddressService(this);
     }
 
-    public void btnTakePhotoOnClicked(){
-        Intent intent = new Intent(this, CameraActivity.class);
-        startActivity(intent);
-    }
-    public void btnMakePaymentOnClicked(){
-        Intent intent = new Intent(this, ConfirmationActivity.class);
-        startActivity(intent);
-    }
 
-    public void setBalanceAmount(){
-
-        TextView txt = (TextView) findViewById(R.id.txtViewBalance);
-        String balance = "";
-        try {
-            balance = "" + address.getBitcoinBalance();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        txt.setText(balance);
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -95,6 +77,10 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    public void btnTakePhotoOnClicked(View v){
+        Intent intent = new Intent(this, ScannerActivity.class);
+        startActivity(intent);
+    }
 
     public void initializeKeys() {
         //if there are keys, load keys into DTO.
@@ -126,7 +112,17 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void setBalanceAmount(){
 
+        TextView txt = (TextView) findViewById(R.id.txtViewBalance);
+        String balance = "";
+        try {
+            balance = "" + address.getBitcoinBalance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        txt.setText(balance);
+    }
 
     public void initializeAddress() throws Exception{
         //This app will use only one address for now to provide basic functionality.

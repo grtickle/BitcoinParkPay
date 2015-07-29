@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="edu.uc.bitcoinparkpay" >
 
-    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -19,9 +19,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CameraActivity" />
+            android:name=".ScannerActivity"
+            android:label="@string/title_activity_scanner" >
+        </activity>
         <activity
-            android:name=".ConfirmationActivity" />
+            android:name=".PaymentActivity"
+            android:label="@string/title_activity_payment" >
+        </activity>
+        <activity
+            android:name=".ConfirmationActivity"
+            android:label="@string/title_activity_confirmation" >
+        </activity>
     </application>
 
 </manifest>
