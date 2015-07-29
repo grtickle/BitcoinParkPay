@@ -17,4 +17,5 @@
     <string name="title_activity_confirmation">ConfirmationActivity</string>
     <string name="Scan">Scan QR Code</string>
     <string name="PaymentConfirmation">Are you sure you\'d like to make this payment?</string>
+    <string name="ThankYou">Thank you for your payment!</string>
 </resources>
