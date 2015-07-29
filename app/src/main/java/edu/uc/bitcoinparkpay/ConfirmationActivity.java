@@ -39,7 +39,7 @@ public class ConfirmationActivity extends ActionBarActivity {
     }
 
     public void ReturnToHomeOnClicked(View v){
-        Intent intent = new Intent(this, ConfirmationActivity.class);
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
     }
 }
