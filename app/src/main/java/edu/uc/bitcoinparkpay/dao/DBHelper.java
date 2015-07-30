@@ -48,19 +48,21 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String TEXT_TYPE = "TEXT";
     private static final String DOUBLE_TYPE = "DOUBLE";
     private static final String COMMA_SEP = ",";
-    private static final String SQL_CREATE_ENTRIES =
+    private static final String SQL_CREATE_ADDRESS_TABLE =
             "CREATE TABLE " + InfoEntry.TABLE_NAME_ADDRESSES + " (" +
                     InfoEntry._ID + " INTEGER PRIMARY KEY," +
                     InfoEntry.COLUMN_NAME_ID + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_LABEL + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_BALANCE + DOUBLE_TYPE + COMMA_SEP +
-                    " )" +
+                    InfoEntry.COLUMN_NAME_BALANCE + DOUBLE_TYPE +
+                    " )";
+
+    private static final String SQL_CREATE_KEY_TABLE =
             "CREATE TABLE " + InfoEntry.TABLE_NAME_KEYS + " (" +
                     InfoEntry._ID + " INTEGER PRIMARY KEY," +
                     InfoEntry.COLUMN_NAME_KEYS_ID + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_KEYS + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION + TEXT_TYPE +
                     " )";
 
     //Setting up Database
@@ -73,7 +75,8 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // TODO Auto-generated method stub
-        db.execSQL(SQL_CREATE_ENTRIES);
+        db.execSQL(SQL_CREATE_ADDRESS_TABLE);
+        db.execSQL(SQL_CREATE_KEY_TABLE);
     }
 
     //Updates the table
@@ -95,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //Gets Table data based on id
     public Cursor getData(String tableName, int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "select * from " + tableName + " where id=" + id + "", null );
+        Cursor res =  db.rawQuery( "SELECT * FROM " + tableName + " WHERE id = " + id + "", null );
         return res;
     }
 
