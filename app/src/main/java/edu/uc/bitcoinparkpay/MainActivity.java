@@ -47,9 +47,6 @@ public class MainActivity extends ActionBarActivity {
         LoaderSyncTask loader = new LoaderSyncTask();
         loader.execute();
 
-
-
-        //addressService = new AddressService(this);
     }
 
     public void btnTakePhotoOnClicked(){
@@ -108,9 +105,10 @@ public class MainActivity extends ActionBarActivity {
             key.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_KEYS_ID)));
             key.setApiKey(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_KEYS)));
             key.setDescription(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION)));
+
+            cursor.close();
         } else {
             //If there are no keys on file, create them
-
 
             //Set key values
             key.setId(1);
@@ -123,6 +121,8 @@ public class MainActivity extends ActionBarActivity {
             values.put(DBHelper.InfoEntry.COLUMN_NAME_KEYS, key.getApiKey());
             values.put(DBHelper.InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION, key.getDescription());
             mydb.insertInfo(DBHelper.InfoEntry.TABLE_NAME_KEYS, values);
+
+            cursor.close();
         }
     }
 
@@ -145,6 +145,7 @@ public class MainActivity extends ActionBarActivity {
             address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
             address.setBitcoinBalance(addressDAO.getBitcoinBalance(DBHelper.InfoEntry.COLUMN_NAME_LABEL).doubleValue());
 
+            cursor.close();
         } else {
             try{
                 //If there is not an address on file, create one
@@ -166,9 +167,13 @@ public class MainActivity extends ActionBarActivity {
                 address.setAddress(addressLongForm);
                 address.setBitcoinBalance(0.0);
 
+                cursor.close();
+
             } catch ( NetworkErrorException e) {
                 Log.e("ERROR: ", "Error in initializeAddress");
                 e.printStackTrace();
+
+                cursor.close();
             }
         }
     }
