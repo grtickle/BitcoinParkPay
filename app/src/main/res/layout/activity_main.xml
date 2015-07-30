@@ -9,24 +9,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/makePayment"
-        android:id="@+id/btnMakeAPayment"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="83dp"
-        android:layout_alignParentLeft="true"
-        android:onClick="btnMakePaymentOnClicked" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/openCamera"
+        android:text="@string/Scan"
         android:id="@+id/btnTakePhoto"
-        android:layout_above="@+id/btnMakeAPayment"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="42dp"
+        android:onClick="btnTakePhotoOnClicked"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:onClick="btnTakePhotoOnClicked" />
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/txtViewBalance"
+        android:layout_toStartOf="@+id/txtViewBalance" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,8 +24,10 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/wallet"
         android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true" />
+        android:layout_below="@+id/txtLogo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="50dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -45,4 +37,17 @@
         android:layout_alignTop="@+id/textView"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Bitcoin Park and Pay"
+        android:id="@+id/txtLogo"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignRight="@+id/btnTakePhoto"
+        android:layout_alignEnd="@+id/btnTakePhoto"
+        android:textSize="65dp" />
 </RelativeLayout>
