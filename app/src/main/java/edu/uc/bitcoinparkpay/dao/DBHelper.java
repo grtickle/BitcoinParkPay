@@ -51,18 +51,18 @@ public class DBHelper extends SQLiteOpenHelper {
     private static final String SQL_CREATE_ADDRESS_TABLE =
             "CREATE TABLE " + InfoEntry.TABLE_NAME_ADDRESSES + " (" +
                     InfoEntry._ID + " INTEGER PRIMARY KEY," +
-                    InfoEntry.COLUMN_NAME_ID + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_ADDRESS + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_LABEL + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_BALANCE + DOUBLE_TYPE +
+                    InfoEntry.COLUMN_NAME_ID + " " + TEXT_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_ADDRESS + " " + TEXT_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_LABEL + " " + TEXT_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_BALANCE + " " + DOUBLE_TYPE +
                     " )";
 
     private static final String SQL_CREATE_KEY_TABLE =
             "CREATE TABLE " + InfoEntry.TABLE_NAME_KEYS + " (" +
                     InfoEntry._ID + " INTEGER PRIMARY KEY," +
-                    InfoEntry.COLUMN_NAME_KEYS_ID + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_KEYS + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION + TEXT_TYPE +
+                    InfoEntry.COLUMN_NAME_KEYS_ID + " " + TEXT_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_KEYS +  " " + TEXT_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_KEYS_DESCRIPTION +  " " + TEXT_TYPE +
                     " )";
 
     //Setting up Database
@@ -98,7 +98,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //Gets Table data based on id
     public Cursor getData(String tableName, int id){
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor res =  db.rawQuery( "SELECT * FROM " + tableName + " WHERE id = " + id + "", null );
+        Cursor res =  db.rawQuery( "SELECT * FROM " + tableName + " WHERE _id = " + id + "", null );
         return res;
     }
 

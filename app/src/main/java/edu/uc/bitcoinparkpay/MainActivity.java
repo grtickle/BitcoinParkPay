@@ -3,7 +3,6 @@ package edu.uc.bitcoinparkpay;
 import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,7 +10,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
@@ -73,12 +71,12 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+/**
     public void btnTakePhotoOnClicked(View v){
         Intent intent = new Intent(this, ScannerActivity.class);
         startActivity(intent);
     }
-
+**/
     public void initializeKeys() {
         //if there are keys, load keys into DTO.
         Cursor cursor = mydb.getData(DBHelper.InfoEntry.TABLE_NAME_KEYS, 1);
@@ -139,7 +137,7 @@ public class MainActivity extends ActionBarActivity {
             address.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ID)));
             address.setAddress(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS)));
             address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
-            address.setBitcoinBalance(addressDAO.getBitcoinBalance(DBHelper.InfoEntry.COLUMN_NAME_LABEL).doubleValue());
+            address.setBitcoinBalance(addressDAO.getBitcoinBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))).doubleValue());
 
             cursor.close();
         } else {
