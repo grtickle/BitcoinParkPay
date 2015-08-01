@@ -3,6 +3,7 @@ package edu.uc.bitcoinparkpay;
 import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,7 +11,11 @@ import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.DBHelper;
@@ -71,12 +76,26 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-/**
+
     public void btnTakePhotoOnClicked(View v){
-        Intent intent = new Intent(this, ScannerActivity.class);
-        startActivity(intent);
+
+        //This method calls the ZXing barcode scanner when the button is clicked; the result is
+        //handled in the onActivityResult method below.
+        IntentIntegrator.initiateScan(this);
     }
-**/
+
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+        if (scanResult != null) {
+            // handle scan result
+        }
+
+        //Intent to go to the confirmation page after the picture is taken
+        Intent intentConfirmation = new Intent(this, ConfirmationActivity.class);
+        startActivity(intentConfirmation);
+
+    }
+
     public void initializeKeys() {
         //if there are keys, load keys into DTO.
         Cursor cursor = mydb.getData(DBHelper.InfoEntry.TABLE_NAME_KEYS, 1);
