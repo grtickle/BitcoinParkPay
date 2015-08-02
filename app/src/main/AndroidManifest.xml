@@ -27,7 +27,7 @@
             android:label="@string/title_activity_payment" >
         </activity>
         <activity
-            android:name=".ConfirmationActivity"
+            android:name=".NotificationActivity"
             android:label="@string/title_activity_confirmation" >
         </activity>
     </application>

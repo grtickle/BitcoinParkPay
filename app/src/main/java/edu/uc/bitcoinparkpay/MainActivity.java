@@ -3,6 +3,7 @@ package edu.uc.bitcoinparkpay;
 import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -87,13 +89,17 @@ public class MainActivity extends ActionBarActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
-            // handle scan result
+            //Intent to go to the confirmation page after the picture is taken
+            Intent intentConfirmation = new Intent(this, NotificationActivity.class);
+            startActivity(intentConfirmation);
+        }else{
+            Context context = getApplicationContext();
+            CharSequence text = "Invalid scan; please try again.";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
         }
-
-        //Intent to go to the confirmation page after the picture is taken
-        Intent intentConfirmation = new Intent(this, ConfirmationActivity.class);
-        startActivity(intentConfirmation);
-
     }
 
     public void initializeKeys() {

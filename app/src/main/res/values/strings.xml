@@ -18,4 +18,5 @@
     <string name="Scan">Scan QR Code</string>
     <string name="PaymentConfirmation">Are you sure you\'d like to make this payment?</string>
     <string name="ThankYou">Thank you for your payment!</string>
+    <string name="Confirm">Are you sure you want to send this payment?</string>
 </resources>
