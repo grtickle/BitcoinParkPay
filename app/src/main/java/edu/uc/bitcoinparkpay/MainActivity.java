@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
             //Intent to go to the confirmation page after the picture is taken
-            Intent intentConfirmation = new Intent(this, NotificationActivity.class);
+            Intent intentConfirmation = new Intent(this, ConfirmationActivity.class);
             startActivity(intentConfirmation);
         }else{
             Context context = getApplicationContext();

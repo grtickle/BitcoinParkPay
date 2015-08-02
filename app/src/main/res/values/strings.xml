@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BitcoinParkPay</string>
+    <string name="app_name">Bitcoin Park Pay</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -12,9 +12,8 @@
     <string name="confirmation">Are you sure you\'d like to transfer these funds?</string>
     <string name="confirm">Confirm</string>
     <string name="transfer">Transfer Amount:</string>
-    <string name="title_activity_scanner">ScannerActivity</string>
-    <string name="title_activity_payment">PaymentActivity</string>
-    <string name="title_activity_confirmation">ConfirmationActivity</string>
+    <string name="title_activity_confirmation">Confirmation</string>
+    <string name="title_activity_notification">Notification</string>
     <string name="Scan">Scan QR Code</string>
     <string name="PaymentConfirmation">Are you sure you\'d like to make this payment?</string>
     <string name="ThankYou">Thank you for your payment!</string>
