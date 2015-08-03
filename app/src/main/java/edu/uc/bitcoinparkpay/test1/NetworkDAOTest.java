@@ -63,7 +63,7 @@ public class NetworkDAOTest extends TestCase{
         addressDAO = new AddressDAO();
         String address = addressDAO.getAddress("default");
         assertNotNull(address);
-        Log.i("BALANCE: ", address);
+        Log.i("ADDRESS: ", address);
     }
 **/
 

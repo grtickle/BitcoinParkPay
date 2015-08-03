@@ -6,7 +6,7 @@
     <string name="Transfer">Transfer</string>
     <string name="makePayment">Make a Payment</string>
     <string name="openCamera">Take Photo</string>
-    <string name="wallet">Wallet Amount:</string>
+    <string name="wallet">Bitcoin Balance:</string>
     <string name="capture">Capture</string>
     <string name="Capture">Capture</string>
     <string name="confirmation">Are you sure you\'d like to transfer these funds?</string>

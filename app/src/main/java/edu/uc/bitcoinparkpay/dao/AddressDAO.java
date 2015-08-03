@@ -54,7 +54,7 @@ public class AddressDAO implements IAddressDAO {
 
         //Parse data and store balance in BigDecimal
         String lines[] = data.split("\\r?\\n");
-        String address = lines[5].substring(13, 52);
+        String address = lines[5].substring(17, 52);
         return address;
     }
 

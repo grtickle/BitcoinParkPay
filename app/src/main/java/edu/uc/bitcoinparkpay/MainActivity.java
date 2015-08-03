@@ -19,6 +19,8 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.text.NumberFormat;
+
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.DBHelper;
 import edu.uc.bitcoinparkpay.dto.Address;
@@ -40,6 +42,7 @@ public class MainActivity extends ActionBarActivity {
 
         address = new Address();
         addressDAO = new AddressDAO();
+        addressService = new AddressService();
         key = new Key();
 
         //Initialize database
@@ -137,14 +140,20 @@ public class MainActivity extends ActionBarActivity {
 
     public void setBalanceAmount(){
 
-        TextView txt = (TextView) findViewById(R.id.txtViewBalance);
+        TextView txtViewBalance = (TextView) findViewById(R.id.txtViewBalance);
         String balance = "";
         try {
             balance = "" + address.getBitcoinBalance();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        txt.setText(balance);
+        txtViewBalance.setText(balance);
+
+        TextView txtDollarBalance = (TextView) findViewById(R.id.txtDollarBalance);
+
+        //Format balance to $ + dollars + . + cents
+        NumberFormat formatter = NumberFormat.getCurrencyInstance();
+        txtDollarBalance.setText("" + formatter.format(address.getDollarBalance()));
     }
 
     public void initializeAddress() throws Exception{
@@ -163,9 +172,10 @@ public class MainActivity extends ActionBarActivity {
             address.setAddress(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS)));
             address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
             address.setBitcoinBalance(addressDAO.getBitcoinBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))).doubleValue());
+            address.setDollarBalance(addressService.getDollarBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))));
 
             //Update database with new balance
-            mydb.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, address.getBitcoinBalance());
+            mydb.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, address.getBitcoinBalance(), address.getDollarBalance());
 
             cursor.close();
         } else {
@@ -182,12 +192,14 @@ public class MainActivity extends ActionBarActivity {
                 values.put(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS, addressLongForm);
                 values.put(DBHelper.InfoEntry.COLUMN_NAME_LABEL,"MAIN");
                 values.put(DBHelper.InfoEntry.COLUMN_NAME_BALANCE, 0.0);
+                values.put(DBHelper.InfoEntry.COLUMN_NAME_DOLLAR_BALANCE, 0.00);
                 mydb.insertInfo(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, values);
 
                 //Set address values
                 address.setAddressLabel("MAIN");
                 address.setAddress(addressLongForm);
                 address.setBitcoinBalance(0.0);
+                address.setDollarBalance(0.00);
 
                 cursor.close();
 

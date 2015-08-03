@@ -36,7 +36,8 @@ public class DBHelper extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_ID = "id";
         public static final String COLUMN_NAME_ADDRESS = "address";
         public static final String COLUMN_NAME_LABEL = "addressLabel";
-        public static final String COLUMN_NAME_BALANCE = "balance";
+        public static final String COLUMN_NAME_BALANCE = "bitcoinBalance";
+        public static final String COLUMN_NAME_DOLLAR_BALANCE = "dollarBalance";
 
         //TKeys
         public static final String TABLE_NAME_KEYS = "TKeys";
@@ -54,7 +55,8 @@ public class DBHelper extends SQLiteOpenHelper {
                     InfoEntry.COLUMN_NAME_ID + " " + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_ADDRESS + " " + TEXT_TYPE + COMMA_SEP +
                     InfoEntry.COLUMN_NAME_LABEL + " " + TEXT_TYPE + COMMA_SEP +
-                    InfoEntry.COLUMN_NAME_BALANCE + " " + DOUBLE_TYPE +
+                    InfoEntry.COLUMN_NAME_BALANCE + " " + DOUBLE_TYPE + COMMA_SEP +
+                    InfoEntry.COLUMN_NAME_DOLLAR_BALANCE + " " + DOUBLE_TYPE +
                     " )";
 
     private static final String SQL_CREATE_KEY_TABLE =
@@ -110,11 +112,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Updates value in table
-    public boolean updateBalance (String tableName, Integer id, double balance)
+    public boolean updateBalance (String tableName, Integer id, double bitcoinBalance, double dollarBalance)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(InfoEntry.COLUMN_NAME_BALANCE, balance);
+        contentValues.put(InfoEntry.COLUMN_NAME_BALANCE, bitcoinBalance);
+        contentValues.put(InfoEntry.COLUMN_NAME_DOLLAR_BALANCE, dollarBalance);
         db.update(tableName, contentValues, "_id = ?", new String[] { Integer.toString(id) } );
         return true;
     }
