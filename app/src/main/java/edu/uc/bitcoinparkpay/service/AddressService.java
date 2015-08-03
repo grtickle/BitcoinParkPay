@@ -15,11 +15,11 @@ public class AddressService implements IAddressService {
     AddressDAO addressDAO;
 
     @Override
-    public BigDecimal getDollarBalance( String label ) throws Exception {
+    public double getDollarBalance( String label ) throws Exception {
         addressDAO = new AddressDAO();
 
         //Multiply the bitcoin balance by the bitcoin price to get balance in USD
-        BigDecimal balance = addressDAO.getBitcoinBalance( label ).multiply(addressDAO.getBitcoinPrice());
+        double balance = addressDAO.getBitcoinBalance( label ).doubleValue() * (addressDAO.getBitcoinPrice().doubleValue());
 
         return balance;
     }

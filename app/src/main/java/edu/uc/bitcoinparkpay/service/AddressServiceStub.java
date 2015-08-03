@@ -8,9 +8,10 @@ import java.math.BigDecimal;
 public class AddressServiceStub implements IAddressService {
 
     @Override
-    public BigDecimal getDollarBalance( String label) throws Exception{
+    public double getDollarBalance( String label) throws Exception{
         BigDecimal balance = new BigDecimal(25.00);
-        return balance;
+        double dblBalance = balance.doubleValue();
+        return dblBalance;
     }
 
     @Override
