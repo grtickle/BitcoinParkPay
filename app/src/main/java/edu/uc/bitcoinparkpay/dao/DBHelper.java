@@ -110,13 +110,12 @@ public class DBHelper extends SQLiteOpenHelper {
     }
 
     //Updates value in table
-    public boolean updateInfo (String tableName, Integer id, String address, String apiKey)
+    public boolean updateBalance (String tableName, Integer id, double balance)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("address", address);
-        contentValues.put("apiKey", apiKey);
-        db.update(tableName, contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        contentValues.put(InfoEntry.COLUMN_NAME_BALANCE, balance);
+        db.update(tableName, contentValues, "_id = ?", new String[] { Integer.toString(id) } );
         return true;
     }
 

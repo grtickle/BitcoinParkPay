@@ -164,6 +164,9 @@ public class MainActivity extends ActionBarActivity {
             address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
             address.setBitcoinBalance(addressDAO.getBitcoinBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))).doubleValue());
 
+            //Update database with new balance
+            mydb.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, address.getBitcoinBalance());
+
             cursor.close();
         } else {
             try{
