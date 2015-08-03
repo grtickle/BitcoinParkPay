@@ -10,6 +10,7 @@ public class Address {
     private String addressLabel;
     private String address;
     private double bitcoinBalance;
+    private double dollarBalance;
 
 
     public int getId() {
@@ -41,4 +42,8 @@ public class Address {
     public void setBitcoinBalance(double bitcoinBalance) {
         this.bitcoinBalance = bitcoinBalance;
     }
+
+    public double getDollarBalance() { return dollarBalance; }
+
+    public void setDollarBalance(double dollarBalance) { this.dollarBalance = dollarBalance; }
 }
