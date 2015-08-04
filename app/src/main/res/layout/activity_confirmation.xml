@@ -43,4 +43,46 @@
             android:onClick="ReturnToHomeOnClicked"
             android:nestedScrollingEnabled="false" />
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Send_to_Address"
+        android:id="@+id/txtSendToAddress"
+        android:layout_below="@+id/txtConfirm"
+        android:layout_marginTop="56dp"
+        android:textSize="20sp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtAddress"
+        android:layout_below="@+id/txtSendToAddress"
+        android:textSize="15dp"
+        android:textColor="#000000"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Send_to_Amount"
+        android:id="@+id/txtSendToAmount"
+        android:layout_below="@+id/txtAddress"
+        android:textSize="20dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtAmount"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textSize="15sp"
+        android:layout_below="@+id/txtSendToAmount" />
 </RelativeLayout>

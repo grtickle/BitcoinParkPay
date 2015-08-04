@@ -4,6 +4,8 @@ import android.util.Log;
 
 import junit.framework.TestCase;
 
+import java.math.BigDecimal;
+
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.NetworkDAO;
 import edu.uc.bitcoinparkpay.service.AddressService;
@@ -78,7 +80,7 @@ public class NetworkDAOTest extends TestCase{
     }
 **/
 
-/**
+
     public void testGetPrice() throws Exception{
         addressDAO = new AddressDAO();
         BigDecimal price = new BigDecimal(0.0);
@@ -86,7 +88,7 @@ public class NetworkDAOTest extends TestCase{
         assertNotNull(price);
         Log.i("PRICE: ", price.toString());
     }
-**/
+
 
 /**
     public void testGetDollarBalance() throws Exception{
@@ -114,7 +116,7 @@ public void testNetwork() throws Exception{
 }
 **/
 
-
+/**
     public void testMakePayment() throws Exception{
 
         double amount = .1;
@@ -125,6 +127,6 @@ public void testNetwork() throws Exception{
             Log.i("MAKE PAYMENT: ", "FAILED");
         }
     }
-
+**/
 
 }

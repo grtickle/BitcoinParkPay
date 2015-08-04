@@ -18,4 +18,6 @@
     <string name="PaymentConfirmation">Are you sure you\'d like to make this payment?</string>
     <string name="ThankYou">Thank you for your payment!</string>
     <string name="Confirm">Are you sure you want to send this payment?</string>
+    <string name="Send_to_Address">Send to Address:</string>
+    <string name="Send_to_Amount">Amount:</string>
 </resources>
