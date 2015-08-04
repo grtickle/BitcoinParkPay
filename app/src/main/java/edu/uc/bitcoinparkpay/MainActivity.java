@@ -25,6 +25,7 @@ import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.DBHelper;
 import edu.uc.bitcoinparkpay.dto.Address;
 import edu.uc.bitcoinparkpay.dto.Key;
+import edu.uc.bitcoinparkpay.dto.ScanData;
 import edu.uc.bitcoinparkpay.service.AddressService;
 
 public class MainActivity extends ActionBarActivity {
@@ -92,8 +93,15 @@ public class MainActivity extends ActionBarActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
         if (scanResult != null) {
+
+            //Get data from scan and separate address from amount and put into ScanData object to
+            //be passed into the next activity
+            String[] dataArray = scanResult.getContents().split(",");
+            ScanData scanData = new ScanData(dataArray[0], Double.parseDouble(dataArray[1]));
+
             //Intent to go to the confirmation page after the picture is taken
             Intent intentConfirmation = new Intent(this, ConfirmationActivity.class);
+            intentConfirmation.putExtra("ScanData", scanData);
             startActivity(intentConfirmation);
         }else{
             Context context = getApplicationContext();

@@ -1,9 +1,11 @@
 package edu.uc.bitcoinparkpay.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by Greg on 8/3/2015.
  */
-public class ScanData {
+public class ScanData implements Serializable{
     private String address;
     private double amount;
 
