@@ -15,8 +15,9 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/txtViewBalance"
-        android:layout_toStartOf="@+id/txtViewBalance" />
+        android:layout_toStartOf="@+id/txtViewBalance"
+        android:layout_alignRight="@+id/linearLayout"
+        android:layout_alignEnd="@+id/linearLayout" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,29 +28,20 @@
         android:layout_below="@+id/txtLogo"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="50dp" />
+        android:layout_marginTop="50dp"
+        android:textSize="20dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/txtViewBalance"
-        android:layout_alignTop="@+id/textView"
-        android:layout_toStartOf="@+id/txtDollarBalance"
-        android:layout_above="@+id/txtDollar"
-        android:layout_toLeftOf="@+id/txtDollarBalance" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Bitcoin Park Pay"
+        android:text="@string/app_name"
         android:id="@+id/txtLogo"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignRight="@+id/btnTakePhoto"
-        android:layout_alignEnd="@+id/btnTakePhoto"
+        android:layout_alignEnd="@id/btnMakeAPayment"
         android:textSize="40dp" />
 
     <TextView
@@ -61,12 +53,33 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:id="@+id/txtDollarBalance"
-        android:layout_below="@+id/txtViewBalance"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignTop="@+id/txtDollar"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/linearLayout">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txtViewBalance"
+            android:layout_above="@+id/txtDollar"
+            android:layout_alignTop="@+id/textView"
+            android:layout_toLeftOf="@+id/txtDollarBalance"
+            android:layout_toStartOf="@+id/txtDollarBalance"
+            android:textSize="40dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:id="@+id/txtDollarBalance"
+            android:layout_below="@+id/txtViewBalance"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="40dp" />
+    </LinearLayout>
 </RelativeLayout>
