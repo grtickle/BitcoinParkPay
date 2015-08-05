@@ -1,10 +1,5 @@
 package edu.uc.bitcoinparkpay.service;
 
-import android.accounts.NetworkErrorException;
-import android.util.Log;
-
-import java.math.BigDecimal;
-
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 
 /**
@@ -28,8 +23,10 @@ public class AddressService implements IAddressService {
     public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception {
         addressDAO = new AddressDAO();
 
-
+        //**************getNetworkFee is broken****************
+        /**
         BigDecimal amountBD = new BigDecimal(amount);
+
 
         //Set flag to determine if sufficient funds; if 0 or 1, send; otherwise not enough funds
         int flag;
@@ -37,6 +34,7 @@ public class AddressService implements IAddressService {
             //Get network fee; if not sufficient funds, will throw exception that will catch and
             //set flag to -1
             BigDecimal amountFee = new BigDecimal(addressDAO.getNetworkFee( amount, to ));
+
 
             //Compare the address balance + network fee with the amount to be sent
             flag = addressDAO.getBitcoinBalance( fromLabel).add(amountFee).compareTo( amountBD );
@@ -53,5 +51,9 @@ public class AddressService implements IAddressService {
             Log.i("ERROR: ", "Not enough funds; AddressService");
             throw new Exception("Insufficient funds.");
         }
+         **/
+
+        //Send funds
+        addressDAO.send( amount, fromLabel, to, pin );
     }
 }

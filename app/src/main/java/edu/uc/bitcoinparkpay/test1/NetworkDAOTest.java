@@ -69,18 +69,18 @@ public class NetworkDAOTest extends TestCase{
     }
 **/
 
-/**
+
     public void testGetNetworkFee() throws Exception{
         addressDAO = new AddressDAO();
 
         double amount = .1;
-        BigDecimal fee = new BigDecimal(String.valueOf(addressDAO.getNetworkFee(amount, "2N8o4HyRanaGSPmeve5qJwEuJK2fBo4CvCu")));
+        BigDecimal fee = new BigDecimal(String.valueOf(addressDAO.getNetworkFee(amount, "2Mubas4uMkRf5Ss9fngEKQnfQXyZ6FAjhnH")));
         assertNotNull(fee);
         Log.i("BALANCE: ", fee.toString());
     }
-**/
 
 
+/**
     public void testGetPrice() throws Exception{
         addressDAO = new AddressDAO();
         BigDecimal price = new BigDecimal(0.0);
@@ -88,7 +88,7 @@ public class NetworkDAOTest extends TestCase{
         assertNotNull(price);
         Log.i("PRICE: ", price.toString());
     }
-
+**/
 
 /**
     public void testGetDollarBalance() throws Exception{

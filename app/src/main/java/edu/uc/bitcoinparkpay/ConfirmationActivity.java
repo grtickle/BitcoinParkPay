@@ -1,7 +1,9 @@
 package edu.uc.bitcoinparkpay;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
@@ -26,6 +28,7 @@ public class ConfirmationActivity extends ActionBarActivity {
     private DBHelper dbHelper;
     private AddressDAO addressDAO;
     private double bitcoinPrice;
+    private ProgressDialog progressBar;
     private static final String PIN = "10293847";
 
 
@@ -93,16 +96,8 @@ public class ConfirmationActivity extends ActionBarActivity {
     public void GoToNotificationOnClicked(View v) throws Exception {
 
         //Make Payment
-        AddressService addressService = new AddressService();
-        //Convert amount from dollars to bitcoin
-        double amountBitcoin = (scanData.getAmount())/(bitcoinPrice);
-        DecimalFormat df = new DecimalFormat("#.00000000");
-        df.format(amountBitcoin);
-        addressService.makePayment(amountBitcoin,address.getAddressLabel(),scanData.getAddress(),PIN);
-
-        //Update database with new balance
-        dbHelper.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, addressDAO.getBitcoinBalance(address.getAddressLabel()).doubleValue(),
-                addressService.getDollarBalance(address.getAddressLabel()));
+        NetworkSyncTask networkSyncTask = new NetworkSyncTask();
+        networkSyncTask.execute();
 
         //Go to notification activity
         Intent intent = new Intent(this, NotificationActivity.class);
@@ -112,5 +107,78 @@ public class ConfirmationActivity extends ActionBarActivity {
     public void ReturnToHomeOnClicked(View v){
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    class NetworkSyncTask extends AsyncTask<Void, Integer, Void> {
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            /**
+             // setup progress dialog
+             progressBar = new ProgressDialog(MainActivity.this);
+             progressBar.setCancelable(true);
+             progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+             progressBar.setProgress(1);
+             progressBar.setMax(100);
+             progressBar.setMessage(getString(R.string.initializing_data));
+             progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",  new DialogInterface.OnClickListener() {
+
+            @Override public void onClick(DialogInterface dialog, int which) {
+            // TODO Auto-generated method stub
+            dialog.dismiss();
+            cancel(true);
+            }
+            });
+             progressBar.show();
+             **/
+        }
+
+
+        @Override
+        protected void onProgressUpdate(Integer... values) {
+            progressBar.setProgress(values[0]);
+            // TODO Auto-generated method stub
+            super.onProgressUpdate(values);
+        }
+
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            try {
+
+                //Make Payment
+                AddressService addressService = new AddressService();
+                //Convert amount from dollars to bitcoin
+                //double amountBitcoin = (scanData.getAmount())/(bitcoinPrice);
+                double amountBitcoin = (scanData.getAmount())/(280.00);
+                DecimalFormat df = new DecimalFormat("#.00000000");
+                amountBitcoin = Double.valueOf(df.format(amountBitcoin));
+                addressService.makePayment(amountBitcoin,address.getAddressLabel(),scanData.getAddress(),PIN);
+
+                //Update database with new balance
+                dbHelper.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, addressDAO.getBitcoinBalance(address.getAddressLabel()).doubleValue(),
+                        addressService.getDollarBalance(address.getAddressLabel()));
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+
+        @Override
+        protected void onPostExecute(Void result) {
+            // TODO Auto-generated method stub
+            //progressBar.dismiss();
+
+            super.onPostExecute(result);
+        }
+
+        @Override
+        protected void onCancelled() {
+            // TODO Auto-generated method stub
+            super.onCancelled();
+        }
     }
 }

@@ -35,8 +35,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/txtViewBalance"
         android:layout_alignTop="@+id/textView"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_toStartOf="@+id/txtDollarBalance"
+        android:layout_above="@+id/txtDollar"
+        android:layout_toLeftOf="@+id/txtDollarBalance" />
 
     <TextView
         android:layout_width="wrap_content"

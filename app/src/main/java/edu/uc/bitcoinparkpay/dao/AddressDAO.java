@@ -122,6 +122,7 @@ public class AddressDAO implements IAddressDAO {
 
     }
 
+    //**************THIS METHOD IS BROKEN**************8
     @Override
     public double getNetworkFee( double amount, String to ) throws Exception {
         networkDAO = new NetworkDAO();
