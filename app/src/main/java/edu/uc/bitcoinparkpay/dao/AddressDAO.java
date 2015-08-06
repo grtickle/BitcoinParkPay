@@ -28,7 +28,7 @@ public class AddressDAO implements IAddressDAO {
             networkDAO.send( "https://block.io/api/v2/get_new_address/?api_key=" + apiKey + "&label=" + label );
         } catch ( Exception e ){
 
-            Log.i( "ERROR:", e.getMessage() );
+            Log.e( "ERROR:", e.getMessage() );
             throw new NetworkErrorException(e);
         }
     }
@@ -46,7 +46,7 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( Exception e ) {
-            Log.i( "ERROR:", "No network connection." );
+            Log.e( "ERROR:", "No network connection." );
             throw new NetworkErrorException(e);
         }
 
@@ -68,7 +68,7 @@ public class AddressDAO implements IAddressDAO {
             //Fetch address data from block.io
             data = networkDAO.fetch( uriAddress );
         } catch ( Exception e ) {
-            Log.i( "ERROR: ", "No network connection." );
+            Log.e( "ERROR: ", "No network connection." );
             throw new NetworkErrorException("No network connection");
         }
 
@@ -112,7 +112,7 @@ public class AddressDAO implements IAddressDAO {
         try{
             networkDAO.send(uriAddress);
         } catch ( NetworkErrorException e){
-            Log.i( "ERROR: ", "No network connection." );
+            Log.e( "ERROR: ", "No network connection." );
         }
     }
 

@@ -7,17 +7,17 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
+import edu.uc.bitcoinparkpay.dao.IAddressDAO;
 
 /**
  * Created by Greg on 6/20/2015.
  */
 public class AddressService implements IAddressService {
 
-    AddressDAO addressDAO;
+    private IAddressDAO addressDAO = new AddressDAO();
 
     @Override
     public double getDollarBalance( String label ) throws Exception {
-        addressDAO = new AddressDAO();
 
         try{
             //Multiply the bitcoin balance by the bitcoin price to get balance in USD
@@ -32,9 +32,6 @@ public class AddressService implements IAddressService {
 
     @Override
     public void makePayment( double amount, String fromLabel, String to, String pin ) throws Exception {
-        addressDAO = new AddressDAO();
-
-        //**************getNetworkFee is broken****************
 
         BigDecimal amountBD = new BigDecimal(amount);
 
@@ -59,12 +56,8 @@ public class AddressService implements IAddressService {
             //Send funds
             addressDAO.send( amount, fromLabel, to, pin );
         } else {
-            Log.i("ERROR: ", "Not enough funds; AddressService");
+            Log.e("ERROR: ", "Not enough funds; AddressService");
             throw new IOException("Insufficient funds.");
         }
-
-
-        //Send funds
-        //addressDAO.send( amount, fromLabel, to, pin );
     }
 }

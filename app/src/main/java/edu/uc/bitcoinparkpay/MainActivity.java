@@ -24,16 +24,18 @@ import java.text.NumberFormat;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.DBHelper;
+import edu.uc.bitcoinparkpay.dao.IAddressDAO;
 import edu.uc.bitcoinparkpay.dto.Address;
 import edu.uc.bitcoinparkpay.dto.Key;
 import edu.uc.bitcoinparkpay.dto.ScanData;
 import edu.uc.bitcoinparkpay.service.AddressService;
+import edu.uc.bitcoinparkpay.service.IAddressService;
 
 public class MainActivity extends ActionBarActivity {
     private DBHelper mydb;
-    private AddressService addressService;
+    private IAddressService addressService;
     private Address address;
-    private AddressDAO addressDAO;
+    private IAddressDAO addressDAO;
     private ProgressDialog progressBar;
     private Key key;
     private Boolean isNetwork = true;

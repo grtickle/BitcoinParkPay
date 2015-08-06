@@ -18,6 +18,7 @@ import java.text.NumberFormat;
 
 import edu.uc.bitcoinparkpay.dao.AddressDAO;
 import edu.uc.bitcoinparkpay.dao.DBHelper;
+import edu.uc.bitcoinparkpay.dao.IAddressDAO;
 import edu.uc.bitcoinparkpay.dto.Address;
 import edu.uc.bitcoinparkpay.dto.ScanData;
 import edu.uc.bitcoinparkpay.service.AddressService;
@@ -30,7 +31,7 @@ public class ConfirmationActivity extends ActionBarActivity {
     private ScanData scanData;
     private Address address;
     private DBHelper dbHelper;
-    private AddressDAO addressDAO;
+    private IAddressDAO addressDAO;
     private double bitcoinPrice;
     private ProgressDialog progressBar;
     private static final String PIN = "10293847";
@@ -168,16 +169,13 @@ public class ConfirmationActivity extends ActionBarActivity {
 
                     isFunds = true;
 
-                    //Update database with new balance
-                    dbHelper.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, addressDAO.getBitcoinBalance(address.getAddressLabel()).doubleValue(),
-                            addressService.getDollarBalance(address.getAddressLabel()));
-
                 } catch (IOException e) {
                     flag = true;
                 }
 
-
-
+                //Update database with new balance
+                dbHelper.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, addressDAO.getBitcoinBalance(address.getAddressLabel()).doubleValue(),
+                        addressService.getDollarBalance(address.getAddressLabel()));
 
             } catch (Exception e) {
                 e.printStackTrace();
