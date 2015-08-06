@@ -20,4 +20,6 @@
     <string name="Confirm">Are you sure you want to send this payment?</string>
     <string name="Send_to_Address">Send to Address:</string>
     <string name="Send_to_Amount">Amount:</string>
+    <string name="Progress_Bar_Message">Sending Bitcoin...</string>
+    <string name="Loading_Data_Message">Loading Data...</string>
 </resources>

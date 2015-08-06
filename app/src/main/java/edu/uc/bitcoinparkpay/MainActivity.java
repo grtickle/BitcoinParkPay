@@ -4,6 +4,7 @@ import android.accounts.NetworkErrorException;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -35,6 +36,7 @@ public class MainActivity extends ActionBarActivity {
     private AddressDAO addressDAO;
     private ProgressDialog progressBar;
     private Key key;
+    private Boolean isNetwork = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -85,9 +87,21 @@ public class MainActivity extends ActionBarActivity {
 
     public void btnTakePhotoOnClicked(View v){
 
-        //This method calls the ZXing barcode scanner when the button is clicked; the result is
-        //handled in the onActivityResult method below.
-        IntentIntegrator.initiateScan(this);
+        if (isNetwork == true){
+            //This method calls the ZXing barcode scanner when the button is clicked; the result is
+            //handled in the onActivityResult method below.
+            IntentIntegrator.initiateScan(this);
+        }else {
+            Context context = getApplicationContext();
+            CharSequence text = "Network connection not available.";
+            int duration = Toast.LENGTH_LONG;
+
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+
+            finish();
+            startActivity(getIntent());
+        }
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -175,15 +189,24 @@ public class MainActivity extends ActionBarActivity {
             // if we are here, we have exactly one result.
             cursor.moveToFirst();
 
-            // populate the address object.
-            address.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ID)));
-            address.setAddress(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS)));
-            address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
-            address.setBitcoinBalance(addressDAO.getBitcoinBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))).doubleValue());
-            address.setDollarBalance(addressService.getDollarBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))));
+            try{
+                // populate the address object.
+                address.setId(cursor.getInt(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ID)));
+                address.setAddress(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_ADDRESS)));
+                address.setAddressLabel(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL)));
+                address.setBitcoinBalance(addressDAO.getBitcoinBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))).doubleValue());
+                address.setDollarBalance(addressService.getDollarBalance(cursor.getString(cursor.getColumnIndex(DBHelper.InfoEntry.COLUMN_NAME_LABEL))));
 
-            //Update database with new balance
-            mydb.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, address.getBitcoinBalance(), address.getDollarBalance());
+                isNetwork = true;
+
+                //Update database with new balance
+                mydb.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, address.getBitcoinBalance(), address.getDollarBalance());
+
+            }catch (NetworkErrorException e){
+                e.printStackTrace();
+                isNetwork = false;
+            }
+
 
             cursor.close();
         } else {
@@ -209,11 +232,15 @@ public class MainActivity extends ActionBarActivity {
                 address.setBitcoinBalance(0.0);
                 address.setDollarBalance(0.00);
 
+                isNetwork = true;
+
                 cursor.close();
 
             } catch ( NetworkErrorException e) {
                 Log.e("ERROR: ", "Error in initializeAddress");
                 e.printStackTrace();
+
+                isNetwork = false;
 
                 cursor.close();
             }
@@ -225,14 +252,14 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /**
+
              // setup progress dialog
              progressBar = new ProgressDialog(MainActivity.this);
              progressBar.setCancelable(true);
-             progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+             progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
              progressBar.setProgress(1);
              progressBar.setMax(100);
-             progressBar.setMessage(getString(R.string.initializing_data));
+             progressBar.setMessage(getString(R.string.Loading_Data_Message));
              progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",  new DialogInterface.OnClickListener() {
 
             @Override public void onClick(DialogInterface dialog, int which) {
@@ -242,7 +269,7 @@ public class MainActivity extends ActionBarActivity {
             }
             });
              progressBar.show();
-             **/
+
         }
 
 
@@ -272,10 +299,21 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
-            //progressBar.dismiss();
+
+            //Toast that says if network is available
+            if (isNetwork == false) {
+                Context context = getApplicationContext();
+                CharSequence text = "Network connection not available.";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
 
             //Set balance label
             setBalanceAmount();
+
+            progressBar.dismiss();
 
             super.onPostExecute(result);
         }

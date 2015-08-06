@@ -1,6 +1,8 @@
 package edu.uc.bitcoinparkpay;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
@@ -8,7 +10,9 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
@@ -30,6 +34,7 @@ public class ConfirmationActivity extends ActionBarActivity {
     private double bitcoinPrice;
     private ProgressDialog progressBar;
     private static final String PIN = "10293847";
+    private Boolean isFunds  = false;
 
 
     @Override
@@ -39,11 +44,8 @@ public class ConfirmationActivity extends ActionBarActivity {
         address = new Address();
         dbHelper =  new DBHelper(this);
         addressDAO = new AddressDAO();
-        try {
-            bitcoinPrice = addressDAO.getBitcoinPrice().doubleValue();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+
         //Load ScanData object
         scanData = (ScanData) getIntent().getSerializableExtra("ScanData");
 
@@ -99,9 +101,12 @@ public class ConfirmationActivity extends ActionBarActivity {
         NetworkSyncTask networkSyncTask = new NetworkSyncTask();
         networkSyncTask.execute();
 
-        //Go to notification activity
-        Intent intent = new Intent(this, NotificationActivity.class);
-        startActivity(intent);
+        if (isFunds == true){
+            //Go to notification activity
+            Intent intent = new Intent(this, NotificationActivity.class);
+            startActivity(intent);
+        }
+
     }
 
     public void ReturnToHomeOnClicked(View v){
@@ -111,17 +116,20 @@ public class ConfirmationActivity extends ActionBarActivity {
 
     class NetworkSyncTask extends AsyncTask<Void, Integer, Void> {
 
+        //This flag says whether or not the doInBackground method throws an exception
+        private Boolean flag = false;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            /**
+
              // setup progress dialog
-             progressBar = new ProgressDialog(MainActivity.this);
+             progressBar = new ProgressDialog(ConfirmationActivity.this);
              progressBar.setCancelable(true);
-             progressBar.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+             progressBar.setProgressStyle(ProgressDialog.STYLE_SPINNER);
              progressBar.setProgress(1);
              progressBar.setMax(100);
-             progressBar.setMessage(getString(R.string.initializing_data));
+             progressBar.setMessage(getString(R.string.Progress_Bar_Message));
              progressBar.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel",  new DialogInterface.OnClickListener() {
 
             @Override public void onClick(DialogInterface dialog, int which) {
@@ -131,7 +139,7 @@ public class ConfirmationActivity extends ActionBarActivity {
             }
             });
              progressBar.show();
-             **/
+
         }
 
 
@@ -154,11 +162,22 @@ public class ConfirmationActivity extends ActionBarActivity {
                 double amountBitcoin = (scanData.getAmount())/(280.00);
                 DecimalFormat df = new DecimalFormat("#.00000000");
                 amountBitcoin = Double.valueOf(df.format(amountBitcoin));
-                addressService.makePayment(amountBitcoin,address.getAddressLabel(),scanData.getAddress(),PIN);
 
-                //Update database with new balance
-                dbHelper.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, addressDAO.getBitcoinBalance(address.getAddressLabel()).doubleValue(),
-                        addressService.getDollarBalance(address.getAddressLabel()));
+                try{
+                    addressService.makePayment(amountBitcoin,address.getAddressLabel(),scanData.getAddress(),PIN);
+
+                    isFunds = true;
+
+                    //Update database with new balance
+                    dbHelper.updateBalance(DBHelper.InfoEntry.TABLE_NAME_ADDRESSES, 1, addressDAO.getBitcoinBalance(address.getAddressLabel()).doubleValue(),
+                            addressService.getDollarBalance(address.getAddressLabel()));
+
+                } catch (IOException e) {
+                    flag = true;
+                }
+
+
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -170,8 +189,18 @@ public class ConfirmationActivity extends ActionBarActivity {
         @Override
         protected void onPostExecute(Void result) {
             // TODO Auto-generated method stub
-            //progressBar.dismiss();
 
+            //Toast that says if funds are available
+            if (flag == true) {
+                Context context = getApplicationContext();
+                CharSequence text = "Insufficient funds in account address.";
+                int duration = Toast.LENGTH_LONG;
+
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+
+            progressBar.dismiss();
             super.onPostExecute(result);
         }
 
