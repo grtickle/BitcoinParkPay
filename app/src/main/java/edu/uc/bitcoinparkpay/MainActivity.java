@@ -148,6 +148,7 @@ public class MainActivity extends ActionBarActivity {
 
             //Set key values
             key.setId(1);
+            //Since the block.io test network is used and no real bitcoin are being sent here, the API key is in plain text
             key.setApiKey("d33a-68b8-59d4-ed27");
             key.setDescription("TESTNET");
 
